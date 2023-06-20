@@ -91,8 +91,8 @@ if [ -f "${file1}" ] && [ -f "${file2}" ] && [ -f "${file3}" ]; then
 	git clone --recursive https://github.com/neodiX42/mytonctrl.git
 else
 	rm -f toninstaller.sh
-#	wget https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/scripts/toninstaller.sh
-	wget https://raw.githubusercontent.com/neodiX42/mytonctrl/master/scripts/toninstaller.sh // TODO temporary
+#	wget https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/scripts/toninstaller.sh // todo temporary
+	wget https://raw.githubusercontent.com/neodiX42/mytonctrl/master/scripts/toninstaller.sh
 	bash toninstaller.sh -c "${config}"
 	rm -f toninstaller.sh
 fi
