@@ -17,10 +17,8 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl stop dht-server
 
   # Переменные
-  str=$(launchctl cat mytoncore | grep User | cut -d '=' -f2)
-  user=$(echo ${str})
-
-  echo $user
+  #str=$(launchctl cat mytoncore | grep User | cut -d '=' -f2)
+  #user=$(echo ${str})
 
   # Удаление служб
   rm -rf /Library/LaunchDaemons/validator.plist
@@ -36,8 +34,8 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   rm -rf /tmp/myton*
   rm -rf /usr/local/bin/mytoninstaller/
   rm -rf /usr/local/bin/mytoncore/mytoncore.db
-  rm -rf /home/${user}/.local/share/mytonctrl
-  rm -rf /home/${user}/.local/share/mytoncore/mytoncore.db
+  rm -rf /home/$USER/.local/share/mytonctrl
+  rm -rf /home/$USER/.local/share/mytoncore/mytoncore.db
 
   # Удаление ссылок
   rm -rf /usr/bin/fift
