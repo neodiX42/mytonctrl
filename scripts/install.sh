@@ -12,7 +12,7 @@ show_help_and_exit() {
     echo ' -m [lite|full]   Choose installation mode'
     echo ' -c  PATH         Provide custom config for toninstaller.sh'
     echo ' -t               Disable telemetry'
-    echo ' -i               Ignore minimum reqiurements'
+    echo ' -i               Ignore minimum requirements'
     echo ' -d               Use pre-packaged dump. Reduces duration of initial synchronization.'
     echo ' -h               Show this help'
     exit
@@ -75,7 +75,7 @@ BIN_DIR=/usr/bin
 if [[ "$OSTYPE" =~ darwin.* ]]; then
 	SOURCES_DIR=/usr/local/src
 	BIN_DIR=/usr/local/bin
-	mkdir -p ${SOURCES_DIR}
+	mkdir -p ${SOURCES_DIR} ${BIN_DIR}
 fi
 
 # Проверяю наличие компонентов TON
@@ -87,10 +87,12 @@ if [ -f "${file1}" ] && [ -f "${file2}" ] && [ -f "${file3}" ]; then
 	echo "TON exist"
 	cd $SOURCES_DIR
 	rm -rf $SOURCES_DIR/mytonctrl
-	git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
+#	git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
+	git clone --recursive https://github.com/neodiX42/mytonctrl.git
 else
 	rm -f toninstaller.sh
-	wget https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/scripts/toninstaller.sh
+#	wget https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/scripts/toninstaller.sh // TODO temporary
+	wget https://raw.githubusercontent.com/neodiX42/mytonctrl/master/toninstaller.sh // TODO temporary
 	bash toninstaller.sh -c "${config}"
 	rm -f toninstaller.sh
 fi
@@ -105,5 +107,5 @@ fi
 python3 ${SOURCES_DIR}/mytonctrl/mytoninstaller.py -m ${mode} -u ${user} -t ${telemetry} --dump ${dump}
 
 # Выход из программы
-echo -e "${COLOR}[4/4]${ENDC} Mytonctrl installation completed"
+echo -e "${COLOR}[4/4]${ENDC} MyTonCtrl installation completed"
 exit 0

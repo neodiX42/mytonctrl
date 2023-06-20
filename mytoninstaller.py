@@ -6,11 +6,12 @@ import random
 import requests
 from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
+from sys import platform
 
 local = MyPyClass(__file__)
 console = MyPyConsole()
 defaultLocalConfigPath = "/usr/bin/ton/local.config.json"
-
+launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
 	local.db["config"]["isStartOnlyOneProcess"] = False
@@ -265,19 +266,24 @@ def FirstNodeSettings():
 
 	# Проверить конфигурацию
 	if os.path.isfile(vconfigPath):
-		local.AddLog("Validators config.json already exist. Break FirstNodeSettings fuction", "warning")
+		local.AddLog("Validators config.json already exist. Break FirstNodeSettings function", "warning")
 		return
 	#end if
 
-	# Создать пользователя
-	file = open("/etc/passwd", 'rt')
-	text = file.read()
-	file.close()
-	if vuser not in text:
-		local.AddLog("Creating new user: " + vuser, "debug")
-		args = ["/usr/sbin/useradd", "-d", "/dev/null", "-s", "/dev/null", vuser]
-		subprocess.run(args)
-	#end if
+
+    if platform.system() in ['Darwin']:
+        args = ["sysadminctl", "-addUser", vuser]
+        subprocess.run(args)
+    else:
+        # Создать Линукс пользователя
+        file = open("/etc/passwd", 'rt')
+        text = file.read()
+        file.close()
+        if vuser not in text:
+            local.AddLog("Creating new user: " + vuser, "debug")
+            args = ["/usr/sbin/useradd", "-d", "/dev/null", "-s", "/dev/null", vuser]
+            subprocess.run(args)
+        #end if
 
 	# Подготовить папки валидатора
 	os.makedirs(tonDbDir, exist_ok=True)
@@ -595,7 +601,7 @@ def EnableLiteServer():
 def StartValidator():
 	# restart validator
 	local.AddLog("Start/restart validator service", "debug")
-	args = ["systemctl", "restart", "validator"]
+	args = [launcher, "restart", "validator"]
 	subprocess.run(args)
 
 	# sleep 10 sec
@@ -606,7 +612,7 @@ def StartValidator():
 def StartMytoncore():
 	# restart mytoncore
 	local.AddLog("Start/restart mytoncore service", "debug")
-	args = ["systemctl", "restart", "mytoncore"]
+	args = [launcher, "restart", "mytoncore"]
 	subprocess.run(args)
 #end define
 
@@ -980,7 +986,7 @@ def EnableDhtServer():
 	subprocess.run(args)
 
 	# start DHT-Server
-	args = ["systemctl", "restart", "dht-server"]
+	args = [launcher, "restart", "dht-server"]
 	subprocess.run(args)
 #end define
 

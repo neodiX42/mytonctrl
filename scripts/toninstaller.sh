@@ -27,6 +27,7 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
 	SOURCES_DIR=/usr/local/src
 	BIN_DIR=/usr/local/bin
 	mkdir -p $SOURCES_DIR
+	mkdir -p $BIN_DIR
 fi
 
 # Установка требуемых пакетов
@@ -38,7 +39,7 @@ if [ "$OSTYPE" == "linux-gnu" ]; then
 		echo "CentOS Linux detected."
 		yum update -y
 		yum install -y epel-release
-		yum install -y git gflags gflags-devel zlib zlib-devel openssl-devel openssl-libs readline-devel libmicrohttpd python3 python3-pip python36-devel g++ gcc libstdc++-devel zlib1g-dev libssl-dev which make gcc-c++ libstdc++-devel 
+		yum install -y git gflags gflags-devel zlib zlib-devel openssl-devel openssl-libs readline-devel libmicrohttpd python3 python3-pip python36-devel g++ gcc libstdc++-devel zlib1g-dev libssl-dev which make gcc-c++ libstdc++-devel libsodium
 		
 		# Upgrade make and gcc in CentOS system
 		yum install centos-release-scl -y
@@ -76,7 +77,7 @@ if [ "$OSTYPE" == "linux-gnu" ]; then
 	elif [ -f /etc/arch-release ]; then
 		echo "Arch Linux detected."
 		pacman -Syuy  --noconfirm
-		pacman -S --noconfirm git cmake clang gflags zlib openssl readline libmicrohttpd python python-pip
+		pacman -S --noconfirm git cmake clang gflags zlib openssl readline libmicrohttpd python python-pip libsodium libsecp256k1 pkg-config
 
 		# Install ninja
 		pacman -S  --noconfirm ninja
@@ -107,7 +108,8 @@ elif [[ "$OSTYPE" =~ darwin.* ]]; then
 	read LOCAL_USERNAME
 	
 	su $LOCAL_USERNAME -c "brew update"
-	su $LOCAL_USERNAME -c "brew install openssl cmake llvm"
+	su $LOCAL_USERNAME -c "brew install openssl@1.1 cmake llvm pkg-config secp256k1 libsodium"
+	export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 
 	# Install ninja
 	su $LOCAL_USERNAME -c "brew install ninja"
@@ -133,7 +135,8 @@ cd $SOURCES_DIR
 rm -rf $SOURCES_DIR/ton
 rm -rf $SOURCES_DIR/mytonctrl
 git clone --recursive https://github.com/ton-blockchain/ton.git
-git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
+#git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
+git clone --recursive https://github.com/neodiX42/mytonctrl.git
 
 # Подготавливаем папки для компиляции
 echo -e "${COLOR}[3/6]${ENDC} Preparing for compilation"

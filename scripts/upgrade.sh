@@ -7,6 +7,11 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  echo "Upgrade is not supported on this platform"
+  exit 1
+fi
+
 # Set default arguments
 author="ton-blockchain"
 repo="ton"
