@@ -92,7 +92,7 @@ if [ -f "${file1}" ] && [ -f "${file2}" ] && [ -f "${file3}" ]; then
 else
 	rm -f toninstaller.sh
 #	wget https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/scripts/toninstaller.sh // todo temporary
-	wget https://raw.githubusercontent.com/neodiX42/mytonctrl/master/scripts/toninstaller.sh
+	wget --no-check-certificate --no-cache --no-cookies https://raw.githubusercontent.com/neodiX42/mytonctrl/master/scripts/toninstaller.sh
 	bash toninstaller.sh -c "${config}"
 	rm -f toninstaller.sh
 fi

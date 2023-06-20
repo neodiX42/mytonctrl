@@ -185,7 +185,7 @@ ninja -j ${cpuNumber} fift validator-engine lite-client validator-engine-console
 
 # Скачиваем конфигурационные файлы lite-client
 echo -e "${COLOR}[5/6]${ENDC} Downloading config files"
-wget ${config} -O global.config.json
+wget --no-check-certificate --no-cache --no-cookies ${config} -O global.config.json
 
 # Выход из программы
 echo -e "${COLOR}[6/6]${ENDC} TON software installation complete"
