@@ -351,15 +351,27 @@ def FirstMytoncoreSettings():
 	Add2Systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
-	path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	if platform == "linux":
+		path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	elif platform == "darwin":
+		path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	else:
+		ColorPrint("unsupported platform")
+
 	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
 	if os.path.isfile(path) or os.path.isfile(path2):
 		local.AddLog("mytoncore.db already exist. Break FirstMytoncoreSettings fuction", "warning")
 		return
 	#end if
 
-	#amazon bugfix
-	path1 = "/home/{user}/.local/".format(user=user)
+	if platform == "linux":
+		#amazon bugfix
+		path1 = "/home/{user}/.local/".format(user=user)
+	elif platform == "darwin":
+		path1 = "/Users/{user}/.local/".format(user=user)
+	else:
+		ColorPrint("unsupported platform")
+
 	path2 = path1 + "share/"
 	chownOwner = "{user}:{user}".format(user=user)
 	os.makedirs(path1, exist_ok=True)
