@@ -305,7 +305,10 @@ def FirstNodeSettings():
 	cpus = psutil.cpu_count() - 1
 	cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
 	cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=tonDbDir, tonLogPath=tonLogPath, cpus=cpus)
-	Add2Systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
+	if platform == "darwin":
+		Add2Launchd(name="validator", user=vuser, start=cmd)
+	else:
+		Add2Systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
 	# Получить внешний ip адрес
 	ip = requests.get("https://ifconfig.me").text
@@ -363,7 +366,10 @@ def FirstMytoncoreSettings():
 	user = local.buffer["user"]
 
 	# Прописать mytoncore.py в автозагрузку
-	Add2Systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
+	if platform == "darwin":
+		Add2Launchd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
+	else:
+	    Add2Systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
 	if platform == "linux":
@@ -1009,7 +1015,10 @@ def EnableDhtServer():
 	# Прописать автозагрузку
 	cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
 	cmd = cmd.format(dht_server=dht_server, globalConfigPath=globalConfigPath, tonDhtServerDir=tonDhtServerDir)
-	Add2Systemd(name="dht-server", user=vuser, start=cmd)
+	if platform == "darwin":
+		Add2Launchd(name="dht-server", user=vuser, start=cmd)
+	else:
+		Add2Systemd(name="dht-server", user=vuser, start=cmd)
 
 	# Получить внешний ip адрес
 	ip = requests.get("https://ifconfig.me").text
