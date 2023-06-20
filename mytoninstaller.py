@@ -10,7 +10,7 @@ from sys import platform
 
 local = MyPyClass(__file__)
 console = MyPyConsole()
-defaultLocalConfigPath = "/usr/bin/ton/local.config.json"
+defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if platform == "darwin" else "/usr/bin/ton/local.config.json"
 launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
@@ -44,14 +44,23 @@ def Init():
 
 def Refresh():
 	user = local.buffer["user"]
-	local.buffer["mconfigPath"] = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	if platform == "darwin":
+		local.buffer["mconfigPath"] = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	else:
+		local.buffer["mconfigPath"] = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+
 	if user == 'root':
 		local.buffer["mconfigPath"] = "/usr/local/bin/mytoncore/mytoncore.db"
 	#end if
 
 	# create variables
-	binDir = "/usr/bin/"
-	srcDir = "/usr/src/"
+	if platform == "darwin":
+		binDir = "/usr/local/bin/"
+		srcDir = "/usr/local/src/"
+	else:
+		binDir = "/usr/bin/"
+		srcDir = "/usr/src/"
+
 	tonWorkDir = "/var/ton-work/"
 	tonBinDir = binDir + "ton/"
 	tonSrcDir = srcDir + "ton/"
@@ -144,7 +153,8 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 	from mytoncore import hex2base64
 
 	# read global config file
-	file = open("/usr/bin/ton/global.config.json", 'rt')
+	globalConfigPath = local.buffer["globalConfigPath"]
+	file = open(globalConfigPath, 'rt')
 	text = file.read()
 	data = json.loads(text)
 	file.close()
@@ -164,7 +174,10 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 
 	# chown
 	user = local.buffer["user"]
-	args = ["chown", "-R", user + ':' + user, localConfigPath]
+	if platform == "darwin":
+		args = ["chown", "-R", "`id -u`:`id -g`", localConfigPath]
+	else:
+		args = ["chown", "-R", user + ':' + user, localConfigPath]
 
 	print("Local config file created:", localConfigPath)
 #end define
@@ -270,8 +283,7 @@ def FirstNodeSettings():
 		return
 	#end if
 
-
-	if platform.system() in ['Darwin']:
+	if platform == "darwin":
 		args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGU&TGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
 		subprocess.run(args)
 	else:
@@ -311,7 +323,10 @@ def FirstNodeSettings():
 
 	# chown 1
 	local.AddLog("Chown ton-work dir", "debug")
-	args = ["chown", "-R", vuser + ':' + vuser, tonWorkDir]
+	if platform == "darwin":
+		args = ["chown", "-R", "`id -u`:`id -g`", tonWorkDir]
+	else:
+		args = ["chown", "-R", vuser + ':' + vuser, tonWorkDir]
 	subprocess.run(args)
 
 	# start validator
@@ -425,7 +440,10 @@ def FirstMytoncoreSettings():
 	SetConfig(path=mconfigPath, data=mconfig)
 
 	# chown 1
-	args = ["chown", user + ':' + user, mconfigDir, mconfigPath]
+	if platform == "darwin":
+		args = ["chown", "`id -u`:`id -g`", mconfigDir, mconfigPath]
+	else:
+		args = ["chown", user + ':' + user, mconfigDir, mconfigPath]
 	subprocess.run(args)
 
 	# start mytoncore
@@ -478,11 +496,18 @@ def EnableValidatorConsole():
 	client_key_b64 = output_arr[1].replace('\n', '')
 
 	# chown 1
-	args = ["chown", vuser + ':' + vuser, newKeyPath]
+	if platform == "darwin":
+		args = ["chown", "`id -u`:`id -g`", newKeyPath]
+	else:
+		args = ["chown", vuser + ':' + vuser, newKeyPath]
+
 	subprocess.run(args)
 
 	# chown 2
-	args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
+	if platform == "darwin":
+		args = ["chown", "`id -u`:`id -g`", server_pubkey, client_key, client_pubkey]
+	else:
+		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
@@ -567,12 +592,18 @@ def EnableLiteServer():
 
 	# chown 1
 	local.AddLog("chown 1", "debug")
-	args = ["chown", vuser + ':' + vuser, newKeyPath]
+	if platform == "darwin":
+		args = ["chown", "`id -u`:`id -g`", newKeyPath]
+	else:
+		args = ["chown", vuser + ':' + vuser, newKeyPath]
 	subprocess.run(args)
 
 	# chown 2
 	local.AddLog("chown 2", "debug")
-	args = ["chown", user + ':' + user, liteserver_pubkey]
+	if platform == "darwin":
+		args = ["chown", "`id -u`:`id -g`", liteserver_pubkey]
+	else:
+		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
@@ -618,7 +649,10 @@ def EnableLiteServer():
 def StartValidator():
 	# restart validator
 	local.AddLog("Start/restart validator service", "debug")
-	args = [launcher, "restart", "validator"]
+	if platform == "darwin":
+		args = [launcher, "kickstart", "-k", "system/validator"]
+	else:
+		args = [launcher, "restart", "validator"]
 	subprocess.run(args)
 
 	# sleep 10 sec
@@ -629,7 +663,10 @@ def StartValidator():
 def StartMytoncore():
 	# restart mytoncore
 	local.AddLog("Start/restart mytoncore service", "debug")
-	args = [launcher, "restart", "mytoncore"]
+	if platform == "darwin":
+		args = [launcher, "kickstart", "-k", "system/mytoncore"]
+	else:
+		args = [launcher, "restart", "mytoncore"]
 	subprocess.run(args)
 #end define
 
@@ -913,6 +950,7 @@ def b642hex(input):
 	return hexString
 #end define
 
+#TODO bin dir vs local bin
 def CreateSymlinks():
 	local.AddLog("start CreateSymlinks fuction", "debug")
 	cport = local.buffer["cport"]
@@ -999,7 +1037,10 @@ def EnableDhtServer():
 	print(text)
 
 	# chown 1
-	args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
+	if platform == "darwin":
+		args = ["chown", "-R", "`id -u`:`id -g`", tonDhtServerDir]
+	else:
+		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
 
 	# start DHT-Server
