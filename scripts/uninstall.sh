@@ -23,10 +23,9 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   echo $user
 
   # Удаление служб
-  rm -rf /etc/systemd/system/validator.service
-  rm -rf /etc/systemd/system/mytoncore.service
-  rm -rf /etc/systemd/system/dht-server.service
-  systemctl daemon-reload
+  rm -rf /Library/LaunchDaemons/validator.plist
+  rm -rf /Library/LaunchDaemons/mytoncore.plist
+  rm -rf /Library/LaunchDaemons/dht-server.plist
 
   # Удаление файлов
   rm -rf /usr/local/src/ton
