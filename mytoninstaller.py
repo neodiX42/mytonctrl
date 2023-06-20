@@ -271,19 +271,19 @@ def FirstNodeSettings():
 	#end if
 
 
-    if platform.system() in ['Darwin']:
-        args = ["sysadminctl", "-addUser", vuser]
-        subprocess.run(args)
-    else:
-        # Создать Линукс пользователя
-        file = open("/etc/passwd", 'rt')
-        text = file.read()
-        file.close()
-        if vuser not in text:
-            local.AddLog("Creating new user: " + vuser, "debug")
-            args = ["/usr/sbin/useradd", "-d", "/dev/null", "-s", "/dev/null", vuser]
-            subprocess.run(args)
-        #end if
+	if platform.system() in ['Darwin']:
+		args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGU&TGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
+		subprocess.run(args)
+	else:
+		# Создать Линукс пользователя
+		file = open("/etc/passwd", 'rt')
+		text = file.read()
+		file.close()
+		if vuser not in text:
+			local.AddLog("Creating new user: " + vuser, "debug")
+			args = ["/usr/sbin/useradd", "-d", "/dev/null", "-s", "/dev/null", vuser]
+			subprocess.run(args)
+		#end if
 
 	# Подготовить папки валидатора
 	os.makedirs(tonDbDir, exist_ok=True)
