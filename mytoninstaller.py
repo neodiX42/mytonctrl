@@ -367,16 +367,21 @@ def FirstMytoncoreSettings():
 	if platform == "linux":
 		#amazon bugfix
 		path1 = "/home/{user}/.local/".format(user=user)
+		path2 = path1 + "share/"
+		chownOwner = "{user}:{user}".format(user=user)
+		os.makedirs(path1, exist_ok=True)
+		os.makedirs(path2, exist_ok=True)
+		args = ["chown", chownOwner, path1, path2]
 	elif platform == "darwin":
 		path1 = "/Users/{user}/.local/".format(user=user)
+		path2 = path1 + "share/"
+		chownOwner = "`id -u`:`id -g`"
+		os.makedirs(path1, exist_ok=True)
+		os.makedirs(path2, exist_ok=True)
+		args = ["chown", chownOwner, path1, path2]
 	else:
 		ColorPrint("unsupported platform")
 
-	path2 = path1 + "share/"
-	chownOwner = "{user}:{user}".format(user=user)
-	os.makedirs(path1, exist_ok=True)
-	os.makedirs(path2, exist_ok=True)
-	args = ["chown", chownOwner, path1, path2]
 	subprocess.run(args)
 
 	# Подготовить папку mytoncore
