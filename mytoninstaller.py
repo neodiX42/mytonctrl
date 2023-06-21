@@ -962,7 +962,7 @@ def CreateSymlinks():
 	cport = local.buffer["cport"]
 
 	tonBinDir = local.buffer["tonBinDir"]
-    tonSrcDir = local.buffer["tonSrcDir"]
+	tonSrcDir = local.buffer["tonSrcDir"]
 
 	mytonctrl_file = tonBinDir + "mytonctrl"
 	fift_file = tonBinDir + "fift"
@@ -1067,7 +1067,7 @@ def SetWebPassword(args):
 
 def EnableJsonRpc():
 	local.AddLog("start EnableJsonRpc function", "debug")
-    srcDir = local.buffer["srcDir"]
+	srcDir = local.buffer["srcDir"]
 	user = local.buffer["user"]
 	exitCode = RunAsRoot(["bash", srcDir + "mytonctrl/scripts/jsonrpcinstaller.sh", "-u", user])
 	if exitCode == 0:
