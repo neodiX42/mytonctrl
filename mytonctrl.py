@@ -10,6 +10,9 @@ local = MyPyClass(__file__)
 console = MyPyConsole()
 ton = MyTonCore()
 
+srcDir = "/usr/local/src/" if platform == "darwin" else "/usr/src/"
+tonSrcDir = "/usr/local/src/ton/" if platform == "darwin" else "/usr/src/ton/"
+
 def Init(argv):
 	# Load translate table
 	local.InitTranslator(local.buffer.get("myDir") + "translate.json")
@@ -106,7 +109,7 @@ def PreUp():
 #end define
 
 def Installer(args):
-	args = ["python3", "/usr/src/mytonctrl/mytoninstaller.py"]
+	args = ["python3", srcDir + mytonctrl/mytoninstaller.py"]
 	subprocess.run(args)
 #end define
 
@@ -138,7 +141,7 @@ def GetAuthorRepoBranchFromArgs(args):
 
 def Update(args):
 	# add safe directory to git
-	gitPath = "/usr/src/mytonctrl"
+	gitPath = srcDir + "mytonctrl"
 	subprocess.run(["git", "config", "--global", "--add", "safe.directory", gitPath])
 
 	# Get author, repo, branch
@@ -152,7 +155,7 @@ def Update(args):
 	branch = data.get("branch", branch)
 
 	# Run script
-	runArgs = ["bash", "/usr/src/mytonctrl/scripts/update.sh", "-a", author, "-r", repo, "-b", branch]
+	runArgs = ["bash", srcDir + "mytonctrl/scripts/update.sh", "-a", author, "-r", repo, "-b", branch]
 	exitCode = RunAsRoot(runArgs)
 	if exitCode == 0:
 		text = "Update - {green}OK{endc}"
@@ -164,7 +167,8 @@ def Update(args):
 
 def Upgrade(args):
 	# add safe directory to git
-	gitPath = "/usr/src/ton"
+
+	gitPath = tonSrcDir
 	subprocess.run(["git", "config", "--global", "--add", "safe.directory", gitPath])
 
 	# Get author, repo, branch
@@ -178,7 +182,7 @@ def Upgrade(args):
 	branch = data.get("branch", branch)
 
 	# Run script
-	runArgs = ["bash", "/usr/src/mytonctrl/scripts/upgrade.sh", "-a", author, "-r", repo, "-b", branch]
+	runArgs = ["bash", srcDir + "mytonctrl/scripts/upgrade.sh", "-a", author, "-r", repo, "-b", branch]
 	exitCode = RunAsRoot(runArgs)
 	if exitCode == 0:
 		text = "Upgrade - {green}OK{endc}"
@@ -195,7 +199,7 @@ def CheckMytonctrlUpdate():
 #end define
 
 def CheckTonUpdate():
-	gitPath = "/usr/src/ton"
+	gitPath = tonSrcDir
 	result = CheckGitUpdate(gitPath)
 	if result is True:
 		ColorPrint(local.Translate("ton_update_available"))

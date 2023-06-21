@@ -961,23 +961,26 @@ def CreateSymlinks():
 	local.AddLog("start CreateSymlinks fuction", "debug")
 	cport = local.buffer["cport"]
 
-	mytonctrl_file = "/usr/bin/mytonctrl"
-	fift_file = "/usr/bin/fift"
-	liteclient_file = "/usr/bin/lite-client"
-	validator_console_file = "/usr/bin/validator-console"
+	tonBinDir = local.buffer["tonBinDir"]
+    tonSrcDir = local.buffer["tonSrcDir"]
+
+	mytonctrl_file = tonBinDir + "mytonctrl"
+	fift_file = tonBinDir + "fift"
+	liteclient_file = tonBinDir + "lite-client"
+	validator_console_file = tonBinDir + "validator-console"
 	env_file = "/etc/environment"
 	file = open(mytonctrl_file, 'wt')
-	file.write("/usr/bin/python3 /usr/src/mytonctrl/mytonctrl.py $@")
+	file.write("/usr/bin/python3 "+ tonSrcDir + "mytonctrl/mytonctrl.py $@")
 	file.close()
 	file = open(fift_file, 'wt')
-	file.write("/usr/bin/ton/crypto/fift $@")
+	file.write(tonBinDir + "crypto/fift $@")
 	file.close()
 	file = open(liteclient_file, 'wt')
-	file.write("/usr/bin/ton/lite-client/lite-client -C /usr/bin/ton/global.config.json $@")
+	file.write(tonBinDir + "lite-client/lite-client -C "+ tonBinDir + "global.config.json $@")
 	file.close()
 	if cport:
 		file = open(validator_console_file, 'wt')
-		file.write("/usr/bin/ton/validator-engine-console/validator-engine-console -k /var/ton-work/keys/client -p /var/ton-work/keys/server.pub -a 127.0.0.1:" + str(cport) + " $@")
+		file.write(tonBinDir + "validator-engine-console/validator-engine-console -k /var/ton-work/keys/client -p /var/ton-work/keys/server.pub -a 127.0.0.1:" + str(cport) + " $@")
 		file.close()
 		args = ["chmod", "+x", validator_console_file]
 		subprocess.run(args)
@@ -985,7 +988,7 @@ def CreateSymlinks():
 	subprocess.run(args)
 
 	# env
-	fiftpath = "export FIFTPATH=/usr/src/ton/crypto/fift/lib/:/usr/src/ton/crypto/smartcont/"
+	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
 	file = open(env_file, 'rt+')
 	text = file.read()
 	if fiftpath not in text:
@@ -1064,8 +1067,9 @@ def SetWebPassword(args):
 
 def EnableJsonRpc():
 	local.AddLog("start EnableJsonRpc function", "debug")
+    srcDir = local.buffer["srcDir"]
 	user = local.buffer["user"]
-	exitCode = RunAsRoot(["bash", "/usr/src/mytonctrl/scripts/jsonrpcinstaller.sh", "-u", user])
+	exitCode = RunAsRoot(["bash", srcDir + "mytonctrl/scripts/jsonrpcinstaller.sh", "-u", user])
 	if exitCode == 0:
 		text = "EnableJsonRpc - {green}OK{endc}"
 	else:
@@ -1075,8 +1079,9 @@ def EnableJsonRpc():
 
 def EnablePytonv3():
 	local.AddLog("start EnablePytonv3 function", "debug")
+	srcDir = local.buffer["srcDir"]
 	user = local.buffer["user"]
-	exitCode = RunAsRoot(["bash", "/usr/src/mytonctrl/scripts/pytonv3installer.sh", "-u", user])
+	exitCode = RunAsRoot(["bash",  srcDir + "mytonctrl/scripts/pytonv3installer.sh", "-u", user])
 	if exitCode == 0:
 		text = "EnablePytonv3 - {green}OK{endc}"
 	else:
