@@ -127,7 +127,12 @@ else
 fi
 
 # Установка компонентов python3
-pip3 install psutil fastcrc requests
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  echo "current user $USER"
+  sudo -i $USER pip3 install psutil fastcrc requests
+else
+  pip3 install psutil fastcrc requests
+fi
 
 # Клонирование репозиториев с github.com
 echo -e "${COLOR}[2/6]${ENDC} Cloning github repository"
