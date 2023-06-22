@@ -303,19 +303,11 @@ def FirstNodeSettings():
 
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
-	cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
-	cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=tonDbDir, tonLogPath=tonLogPath, cpus=cpus)
 	if platform == "darwin":
-	    cmd0 = validatorAppPath
-	    cmd1 = "--threads " + str(cpus)
-	    cmd2 = "--daemonize"
-	    cmd3 = "--global-config " + globalConfigPath
-	    cmd4 = "--db " + tonDbDir
-	    cmd5 = "--logname " + tonLogPath
-	    cmd6 = "--state-ttl 604800"
-	    cmd7 = "--verbosity 1"
-		Add2LaunchdValidator(name="validator", user=vuser, start=cmd0, arg1=cmd1, arg2=cmd2, arg3=cmd3, arg4=cmd4, arg5=cmd5, arg6=cmd6, arg7=cmd7)
+		Add2LaunchdValidator(name="validator", user=vuser, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=tonDbDir, arg4=tonLogPath, arg5=604800, arg6=1)
 	else:
+		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
+		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=tonDbDir, tonLogPath=tonLogPath, cpus=cpus)
 		Add2Systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
 	# Получить внешний ip адрес
@@ -1028,10 +1020,7 @@ def EnableDhtServer():
 
 	# Прописать автозагрузку
 	if platform == "darwin":
-		cmd0 = dht_server
-	    cmd1 = "-C " + globalConfigPath
-	    cmd2 = "-D " + tonDhtServerDir
-		Add2LaunchdDhtServer(name="dht-server", user=vuser, start=cmd0, arg1=cmd1, arg2=cmd2)
+		Add2LaunchdDhtServer(name="dht-server", user=vuser, start=dht_server, arg1=globalConfigPath, arg2=tonDhtServerDir)
 	else:
 		cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
 		cmd = cmd.format(dht_server=dht_server, globalConfigPath=globalConfigPath, tonDhtServerDir=tonDhtServerDir)
