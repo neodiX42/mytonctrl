@@ -129,7 +129,7 @@ fi
 # Установка компонентов python3
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   echo "current user $USER"
-  sudo -i $USER pip3 install psutil fastcrc requests
+  sudo -i -u administrator pip3 install psutil fastcrc requests
 else
   pip3 install psutil fastcrc requests
 fi
