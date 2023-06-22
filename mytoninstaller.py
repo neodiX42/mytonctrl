@@ -24,7 +24,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator3"
+	local.buffer["vuser"] = "validator4"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -380,6 +380,8 @@ def FirstMytoncoreSettings():
 		ColorPrint("unsupported platform")
 
 	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
+	local.AddLog("path : " + path, "debug")
+	local.AddLog("path2: " + path2, "debug")
 	if os.path.isfile(path) or os.path.isfile(path2):
 		local.AddLog("mytoncore.db already exist. Break FirstMytoncoreSettings function", "error")
 		return
