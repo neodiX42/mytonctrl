@@ -974,10 +974,11 @@ def CreateSymlinks():
 	tonBinDir = local.buffer["tonBinDir"]
 	tonSrcDir = local.buffer["tonSrcDir"]
 
-	mytonctrl_file = tonBinDir + "mytonctrl"
-	fift_file = tonBinDir + "fift"
-	liteclient_file = tonBinDir + "lite-client"
-	validator_console_file = tonBinDir + "validator-console"
+	mytonctrl_file = "/usr/bin/mytonctrl"
+	fift_file = "/usr/bin/fift"
+	liteclient_file ="/usr/bin/lite-client"
+	validator_console_file = "/usr/bin/validator-console"
+
 	env_file = "/etc/environment"
 	file = open(mytonctrl_file, 'wt')
 	file.write("/usr/bin/python3 "+ tonSrcDir + "mytonctrl/mytonctrl.py $@")
