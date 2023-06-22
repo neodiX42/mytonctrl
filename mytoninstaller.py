@@ -964,10 +964,13 @@ def CreateSymlinks():
 	tonBinDir = local.buffer["tonBinDir"]
 	tonSrcDir = local.buffer["tonSrcDir"]
 
-	mytonctrl_file = "/usr/bin/mytonctrl"
-	fift_file = "/usr/bin/fift"
-	liteclient_file ="/usr/bin/lite-client"
-	validator_console_file = "/usr/bin/validator-console"
+	binDir = local.buffer["binDir"]
+    srcDir = local.buffer["srcDir"]
+
+	mytonctrl_file = binDir + "mytonctrl"
+	fift_file = binDir + "fift"
+	liteclient_file = binDir + "lite-client"
+	validator_console_file = binDir + "validator-console"
 
 	env_file = "/etc/environment"
 	file = open(mytonctrl_file, 'wt')
