@@ -517,8 +517,6 @@ def EnableValidatorConsole():
 	subprocess.run(args)
 
 	# read vconfig
-	ColorPrint("path " + vconfigPath)
-
 	vconfig = GetConfig(path=vconfigPath)
 
 	# prepare config
