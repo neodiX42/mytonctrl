@@ -264,7 +264,7 @@ def Str2Bool(str):
 #end define
 
 def FirstNodeSettings():
-	local.AddLog("start FirstNodeSettings fuction", "debug")
+	local.AddLog("start FirstNodeSettings function", "debug")
 
 	# Создать переменные
 	user = local.buffer["user"]
@@ -342,7 +342,7 @@ def DownloadDump():
 		return
 	#end if
 
-	local.AddLog("start DownloadDump fuction", "debug")
+	local.AddLog("start DownloadDump function", "debug")
 	url = "https://dump.ton.org"
 	dumpSize = requests.get(url + "/dumps/latest.size.archive.txt").text
 	print("dumpSize:", dumpSize)
@@ -362,12 +362,12 @@ def DownloadDump():
 #end define
 
 def FirstMytoncoreSettings():
-	local.AddLog("start FirstMytoncoreSettings fuction", "debug")
+	local.AddLog("start FirstMytoncoreSettings function", "debug")
 	user = local.buffer["user"]
-
+	srcDir = local.buffer["srcDir"]
 	# Прописать mytoncore.py в автозагрузку
 	if platform == "darwin":
-		Add2Launchd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
+		Add2Launchd(name="mytoncore", user=user, python=True, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
 	    Add2Systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
@@ -476,7 +476,7 @@ def EnableValidatorConsole():
 
 	# Check if key exist
 	if os.path.isfile(server_key) or os.path.isfile(client_key):
-		local.AddLog("Server or client key already exist. Break EnableValidatorConsole fuction", "warning")
+		local.AddLog("Server or client key already exist. Break EnableValidatorConsole function", "warning")
 		return
 	#end if
 
@@ -577,7 +577,7 @@ def EnableLiteServer():
 
 	# Check if key exist
 	if os.path.isfile(liteserver_pubkey):
-		local.AddLog("Liteserver key already exist. Break EnableLiteServer fuction", "warning")
+		local.AddLog("Liteserver key already exist. Break EnableLiteServer function", "warning")
 		return
 	#end if
 
@@ -958,7 +958,7 @@ def b642hex(input):
 
 #TODO bin dir vs local bin
 def CreateSymlinks():
-	local.AddLog("start CreateSymlinks fuction", "debug")
+	local.AddLog("start CreateSymlinks function", "debug")
 	cport = local.buffer["cport"]
 
 	tonBinDir = local.buffer["tonBinDir"]
@@ -1008,7 +1008,7 @@ def EnableDhtServer():
 
 	# Проверить конфигурацию
 	if os.path.isfile("/var/ton-dht-server/config.json"):
-		local.AddLog("DHT-Server config.json already exist. Break EnableDhtServer fuction", "warning")
+		local.AddLog("DHT-Server config.json already exist. Break EnableDhtServer function", "warning")
 		return
 	#end if
 
