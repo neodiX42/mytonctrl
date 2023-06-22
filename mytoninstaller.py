@@ -306,7 +306,15 @@ def FirstNodeSettings():
 	cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
 	cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=tonDbDir, tonLogPath=tonLogPath, cpus=cpus)
 	if platform == "darwin":
-		Add2Launchd(name="validator", user=vuser, start=cmd)
+	    cmd0 = validatorAppPath
+	    cmd1 = "--threads " + str(cpus)
+	    cmd2 = "--daemonize"
+	    cmd3 = "--global-config " + globalConfigPath
+	    cmd4 = "--db " + tonDbDir
+	    cmd5 = "--logname " + tonLogPath
+	    cmd6 = "--state-ttl 604800"
+	    cmd7 = "--verbosity 1"
+		Add2LaunchdValidator(name="validator", user=vuser, start=cmd0, arg1=cmd1, arg2=cmd2, arg3=cmd3, arg4=cmd4, arg5=cmd5, arg6=cmd6, arg7=cmd7)
 	else:
 		Add2Systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
@@ -367,7 +375,7 @@ def FirstMytoncoreSettings():
 	srcDir = local.buffer["srcDir"]
 	# Прописать mytoncore.py в автозагрузку
 	if platform == "darwin":
-		Add2Launchd(name="mytoncore", user=user, python=True, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
+		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
 	    Add2Systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
@@ -379,9 +387,11 @@ def FirstMytoncoreSettings():
 	else:
 		ColorPrint("unsupported platform")
 
+	ColorPrint("path " + path)
+
 	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
 	if os.path.isfile(path) or os.path.isfile(path2):
-		local.AddLog("mytoncore.db already exist. Break FirstMytoncoreSettings function", "warning")
+		local.AddLog("mytoncore.db already exist. Break FirstMytoncoreSettings function", "error")
 		return
 	#end if
 
@@ -1016,11 +1026,14 @@ def EnableDhtServer():
 	os.makedirs(tonDhtServerDir, exist_ok=True)
 
 	# Прописать автозагрузку
-	cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
-	cmd = cmd.format(dht_server=dht_server, globalConfigPath=globalConfigPath, tonDhtServerDir=tonDhtServerDir)
 	if platform == "darwin":
-		Add2Launchd(name="dht-server", user=vuser, start=cmd)
+		cmd0 = dht_server
+	    cmd1 = "-C " + globalConfigPath
+	    cmd2 = "-D " + tonDhtServerDir
+		Add2LaunchdDhtServer(name="dht-server", user=vuser, start=cmd0, arg1=cmd1, arg2=cmd2)
 	else:
+		cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
+		cmd = cmd.format(dht_server=dht_server, globalConfigPath=globalConfigPath, tonDhtServerDir=tonDhtServerDir)
 		Add2Systemd(name="dht-server", user=vuser, start=cmd)
 
 	# Получить внешний ip адрес
@@ -1056,7 +1069,10 @@ def EnableDhtServer():
 	subprocess.run(args)
 
 	# start DHT-Server
-	args = [launcher, "restart", "dht-server"]
+	if platform == "darwin":
+		args = [launcher, "kickstart", "-k", "system/dht-server"]
+	else:
+		args = [launcher, "restart", "dht-server"]
 	subprocess.run(args)
 #end define
 
