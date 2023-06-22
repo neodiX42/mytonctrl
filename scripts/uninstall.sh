@@ -12,9 +12,9 @@ ENDC='\033[0m'
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   # Остановка служб
-  launchctl stop validator
-  launchctl stop mytoncore
-  launchctl stop dht-server
+  launchctl stop system/validator
+  launchctl stop system/mytoncore
+  launchctl stop system/dht-server
 
   launchctl unload /Library/LaunchDaemons/validator.plist
   launchctl unload /Library/LaunchDaemons/mytoncore.plist
