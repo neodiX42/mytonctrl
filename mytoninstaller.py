@@ -175,7 +175,7 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 	# chown
 	user = local.buffer["user"]
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", localConfigPath]
+		args = ["chown", "-R", user + ':' + "wheel", localConfigPath]
 	else:
 		args = ["chown", "-R", user + ':' + user, localConfigPath]
 
@@ -319,6 +319,7 @@ def FirstNodeSettings():
 	# Первый запуск
 	local.AddLog("First start validator - create config.json", "debug")
 	args = [validatorAppPath, "--global-config", globalConfigPath, "--db", tonDbDir, "--ip", addr, "--logname", tonLogPath]
+	local.AddLog(args, "debug")
 	subprocess.run(args)
 
 	# Скачать дамп
@@ -396,7 +397,7 @@ def FirstMytoncoreSettings():
 	elif platform == "darwin":
 		path1 = "/Users/{user}/.local/".format(user=user)
 		path2 = path1 + "share/"
-		chownOwner = user + ':' + "staff"
+		chownOwner = user + ':' + "wheel"
 		os.makedirs(path1, exist_ok=True)
 		os.makedirs(path2, exist_ok=True)
 		args = ["chown", chownOwner, path1, path2]
@@ -503,7 +504,7 @@ def EnableValidatorConsole():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		args = ["chown", user + ':' + "wheel", newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 
@@ -511,7 +512,7 @@ def EnableValidatorConsole():
 
 	# chown 2
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
+		args = ["chown", user + ':' + "wheel", server_pubkey, client_key, client_pubkey]
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
@@ -605,7 +606,7 @@ def EnableLiteServer():
 	# chown 1
 	local.AddLog("chown 1", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		args = ["chown", user + ':' + "wheel", newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 	subprocess.run(args)
@@ -613,7 +614,7 @@ def EnableLiteServer():
 	# chown 2
 	local.AddLog("chown 2", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", liteserver_pubkey]
+		args = ["chown", user + ':' + "wheel", liteserver_pubkey]
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
@@ -1069,7 +1070,7 @@ def EnableDhtServer():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", tonDhtServerDir]
+		args = ["chown", "-R", user + ':' + "wheel", tonDhtServerDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
