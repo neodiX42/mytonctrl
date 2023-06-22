@@ -380,8 +380,6 @@ def FirstMytoncoreSettings():
 		ColorPrint("unsupported platform")
 
 	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
-	local.AddLog("path : " + path, "debug")
-	local.AddLog("path2: " + path2, "debug")
 	if os.path.isfile(path) or os.path.isfile(path2):
 		local.AddLog("mytoncore.db already exist. Break FirstMytoncoreSettings function", "error")
 		return
@@ -518,7 +516,12 @@ def EnableValidatorConsole():
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
 
+	# todo restore rights
+	args = ["chmod", "666", vconfigPath]
+	subprocess.run(args)
+
 	# read vconfig
+	local.AddLog("read vconfigPath: " + vconfigPath, "debug")
 	vconfig = GetConfig(path=vconfigPath)
 
 	# prepare config
@@ -532,6 +535,7 @@ def EnableValidatorConsole():
 	vconfig["control"].append(control)
 
 	# write vconfig
+	local.AddLog("write vconfigPath: " + vconfigPath, "debug")
 	SetConfig(path=vconfigPath, data=vconfig)
 
 	# restart validator
