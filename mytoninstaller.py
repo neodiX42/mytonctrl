@@ -965,7 +965,7 @@ def CreateSymlinks():
 	tonSrcDir = local.buffer["tonSrcDir"]
 
 	binDir = local.buffer["binDir"]
-    srcDir = local.buffer["srcDir"]
+	srcDir = local.buffer["srcDir"]
 
 	mytonctrl_file = binDir + "mytonctrl"
 	fift_file = binDir + "fift"
