@@ -24,7 +24,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator"
+	local.buffer["vuser"] = "validator1"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -284,7 +284,7 @@ def FirstNodeSettings():
 	#end if
 
 	if platform == "darwin":
-		args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGU&TGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
+		args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGUTGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
 		subprocess.run(args)
 	else:
 		# Создать Линукс пользователя
