@@ -24,7 +24,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator1"
+	local.buffer["vuser"] = "validator2"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -175,7 +175,7 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 	# chown
 	user = local.buffer["user"]
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", localConfigPath]
+		args = ["chown", "-R", user + ':' + "wheel", localConfigPath]
 	else:
 		args = ["chown", "-R", user + ':' + user, localConfigPath]
 
@@ -327,7 +327,7 @@ def FirstNodeSettings():
 	# chown 1
 	local.AddLog("Chown ton-work dir", "debug")
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
+		args = ["chown", "-R", vuser + ':' + "staff", tonWorkDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonWorkDir]
 	subprocess.run(args)
@@ -447,7 +447,7 @@ def FirstMytoncoreSettings():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", mconfigDir, mconfigPath]
+		args = ["chown", user + ':' + "wheel", mconfigDir, mconfigPath]
 	else:
 		args = ["chown", user + ':' + user, mconfigDir, mconfigPath]
 	subprocess.run(args)
@@ -503,7 +503,7 @@ def EnableValidatorConsole():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		args = ["chown", vuser + ':' + "staff", newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 
@@ -511,7 +511,7 @@ def EnableValidatorConsole():
 
 	# chown 2
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
+		args = ["chown", user + ':' + "wheel", server_pubkey, client_key, client_pubkey]
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
@@ -599,7 +599,7 @@ def EnableLiteServer():
 	# chown 1
 	local.AddLog("chown 1", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		args = ["chown", vuser + ':' + "staff", newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 	subprocess.run(args)
@@ -607,7 +607,7 @@ def EnableLiteServer():
 	# chown 2
 	local.AddLog("chown 2", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", liteserver_pubkey]
+		args = ["chown", user + ':' + "wheel", liteserver_pubkey]
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
@@ -972,7 +972,7 @@ def CreateSymlinks():
 	liteclient_file = binDir + "lite-client"
 	validator_console_file = binDir + "validator-console"
 
-	env_file = "/etc/environment"
+
 	file = open(mytonctrl_file, 'wt')
 	file.write("/usr/bin/python3 "+ tonSrcDir + "mytonctrl/mytonctrl.py $@")
 	file.close()
@@ -993,11 +993,20 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
-	file = open(env_file, 'rt+')
-	text = file.read()
-	if fiftpath not in text:
-		file.write(fiftpath + '\n')
-	file.close()
+	if platform == "darwin":
+		env_file = "/etc/profile"
+		file = open(env_file, 'rt+')
+		text = file.read()
+		if fiftpath not in text:
+			file.write(fiftpath + '\n')
+		file.close()
+	else:
+		env_file = "/etc/environment"
+		file = open(env_file, 'rt+')
+		text = file.read()
+		if fiftpath not in text:
+			file.write(fiftpath + '\n')
+		file.close()
 #end define
 
 def EnableDhtServer():
@@ -1054,7 +1063,7 @@ def EnableDhtServer():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", tonDhtServerDir]
+		args = ["chown", "-R", vuser + ':' + "staff", tonDhtServerDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
