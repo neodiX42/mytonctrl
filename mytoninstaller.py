@@ -24,7 +24,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator4"
+	local.buffer["vuser"] = "validator5"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -319,7 +319,8 @@ def FirstNodeSettings():
 
 	# Первый запуск
 	local.AddLog("First start validator - create config.json", "debug")
-	args = [validatorAppPath, "--global-config", globalConfigPath, "--db", tonDbDir, "--ip", addr, "--logname", tonLogPath]
+	#args = [validatorAppPath, "--global-config", globalConfigPath, "--db", tonDbDir, "--ip", addr, "--logname", tonLogPath]
+	args = [validatorAppPath, "--global-config", globalConfigPath, "--db", tonDbDir, "--ip", addr]
 	local.AddLog(args, "debug")
 	subprocess.run(args)
 
@@ -988,7 +989,7 @@ def CreateSymlinks():
 
 
 	file = open(mytonctrl_file, 'wt')
-	file.write("/usr/bin/python3 "+ tonSrcDir + "mytonctrl/mytonctrl.py $@")
+	file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
 	file.close()
 	file = open(fift_file, 'wt')
 	file.write(tonBinDir + "crypto/fift $@")
