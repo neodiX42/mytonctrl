@@ -329,7 +329,7 @@ def FirstNodeSettings():
 	args = ["chmod", "666", vconfigPath]
 	subprocess.run(args)
 
-	#time.sleep(60)
+	time.sleep(15)
 
 	# Скачать дамп
 	DownloadDump()
