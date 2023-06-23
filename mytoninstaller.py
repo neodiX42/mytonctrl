@@ -325,7 +325,11 @@ def FirstNodeSettings():
 	local.AddLog(args, "debug")
 	subprocess.run(args)
 
-	time.sleep(60)
+	# todo restore rights
+	args = ["chmod", "666", vconfigPath]
+	subprocess.run(args)
+
+	#time.sleep(60)
 
 	# Скачать дамп
 	DownloadDump()
@@ -524,10 +528,6 @@ def EnableValidatorConsole():
 		local.AddLog("skip4", "debug")
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
-	subprocess.run(args)
-
-	# todo restore rights
-	args = ["chmod", "666", vconfigPath]
 	subprocess.run(args)
 
 	# read vconfig
