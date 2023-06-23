@@ -328,7 +328,7 @@ def FirstNodeSettings():
 	# chown 1
 	local.AddLog("Chown ton-work dir", "debug")
 	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
+		#args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonWorkDir]
 	subprocess.run(args)
@@ -448,7 +448,7 @@ def FirstMytoncoreSettings():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", mconfigDir, mconfigPath]
+		#args = ["chown", user + ':' + "staff", mconfigDir, mconfigPath]
 	else:
 		args = ["chown", user + ':' + user, mconfigDir, mconfigPath]
 	subprocess.run(args)
