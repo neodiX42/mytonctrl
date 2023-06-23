@@ -32,6 +32,10 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   # Удаление файлов
   rm -rf /usr/local/src/ton
   rm -rf /usr/local/bin/ton
+  rm -rf /usr/local/bin/mytonctrl
+  rm -rf /usr/local/bin/validator-console
+  rm -rf /usr/local/bin/fift
+  rm -rf /usr/local/bin/lite-client
   rm -rf /usr/local/src/mytonctrl
   rm -rf /var/ton-work
   rm -rf /var/ton-dht-server

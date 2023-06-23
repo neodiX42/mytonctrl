@@ -531,7 +531,6 @@ def EnableValidatorConsole():
 	subprocess.run(args)
 
 	# read vconfig
-	local.AddLog("read vconfigPath: " + vconfigPath, "debug")
 	vconfig = GetConfig(path=vconfigPath)
 
 	# prepare config
@@ -545,7 +544,6 @@ def EnableValidatorConsole():
 	vconfig["control"].append(control)
 
 	# write vconfig
-	local.AddLog("write vconfigPath: " + vconfigPath, "debug")
 	SetConfig(path=vconfigPath, data=vconfig)
 
 	# restart validator
