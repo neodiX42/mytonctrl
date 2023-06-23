@@ -24,7 +24,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator6"
+	local.buffer["vuser"] = "validator5"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -508,7 +508,8 @@ def EnableValidatorConsole():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		#args = ["chown", user + ':' + "staff", newKeyPath]
+		local.AddLog("skip3", "debug")
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 
@@ -516,7 +517,8 @@ def EnableValidatorConsole():
 
 	# chown 2
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
+		#args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
+		local.AddLog("skip4", "debug")
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
@@ -610,7 +612,8 @@ def EnableLiteServer():
 	# chown 1
 	local.AddLog("chown 1", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
+		#args = ["chown", user + ':' + "staff", newKeyPath]
+		local.AddLog("skip5", "debug")
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 	subprocess.run(args)
@@ -618,7 +621,8 @@ def EnableLiteServer():
 	# chown 2
 	local.AddLog("chown 2", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", liteserver_pubkey]
+		#args = ["chown", user + ':' + "staff", liteserver_pubkey]
+		local.AddLog("skip6", "debug")
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
