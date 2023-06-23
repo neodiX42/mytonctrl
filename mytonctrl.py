@@ -109,7 +109,7 @@ def PreUp():
 #end define
 
 def Installer(args):
-	args = ["python3", srcDir + mytonctrl/mytoninstaller.py"]
+	args = ["python3", srcDir + "mytonctrl/mytoninstaller.py"]
 	subprocess.run(args)
 #end define
 
