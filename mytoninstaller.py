@@ -410,7 +410,7 @@ def FirstMytoncoreSettings():
 		chownOwner = user + ':' + "staff"
 		os.makedirs(path1, exist_ok=True)
 		os.makedirs(path2, exist_ok=True)
-		args = ["chown", chownOwner, path1, path2]
+		args = ["chown", "-R", chownOwner, path1, path2]
 	else:
 		ColorPrint("unsupported platform")
 
@@ -458,7 +458,7 @@ def FirstMytoncoreSettings():
 
 	# chown 1
 	if platform == "darwin":
-		#args = ["chown", user + ':' + "staff", mconfigDir, mconfigPath]
+		args = ["chown", user + ':' + "staff", mconfigDir, mconfigPath]
 		local.AddLog("skip2", "debug")
 	else:
 		args = ["chown", user + ':' + user, mconfigDir, mconfigPath]
