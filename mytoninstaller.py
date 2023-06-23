@@ -631,7 +631,6 @@ def EnableLiteServer():
 	subprocess.run(args)
 
 	# read vconfig
-	local.AddLog("read vconfig", "debug")
 	vconfig = GetConfig(path=vconfigPath)
 
 	# prepare vconfig
@@ -642,7 +641,6 @@ def EnableLiteServer():
 	vconfig["liteservers"].append(liteserver)
 
 	# write vconfig
-	local.AddLog("write vconfig", "debug")
 	SetConfig(path=vconfigPath, data=vconfig)
 
 	# restart validator

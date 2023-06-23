@@ -282,7 +282,7 @@ class MyTonCore():
 	#end define
 
 	def Init(self):
-		# Check all directorys
+		# Check all directories
 		os.makedirs(self.walletsDir, exist_ok=True)
 		os.makedirs(self.contractsDir, exist_ok=True)
 		os.makedirs(self.poolsDir, exist_ok=True)
