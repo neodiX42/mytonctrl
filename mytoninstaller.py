@@ -613,7 +613,7 @@ def EnableLiteServer():
 	# chown 1
 	local.AddLog("chown 1", "debug")
 	if platform == "darwin":
-		#args = ["chown", user + ':' + "staff", newKeyPath]
+		args = ["chown", user + ':' + "staff", newKeyPath]
 		local.AddLog("skip5", "debug")
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
@@ -622,7 +622,7 @@ def EnableLiteServer():
 	# chown 2
 	local.AddLog("chown 2", "debug")
 	if platform == "darwin":
-		#args = ["chown", user + ':' + "staff", liteserver_pubkey]
+		args = ["chown", user + ':' + "staff", liteserver_pubkey]
 		local.AddLog("skip6", "debug")
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
