@@ -104,6 +104,7 @@ user=$(whoami)
 if [ "$parent_name" = "sudo" ]; then
     user=$(logname)
 fi
+echo python3 ${SOURCES_DIR}/mytonctrl/mytoninstaller.py -m ${mode} -u ${user} -t ${telemetry} --dump ${dump}
 python3 ${SOURCES_DIR}/mytonctrl/mytoninstaller.py -m ${mode} -u ${user} -t ${telemetry} --dump ${dump}
 
 # Выход из программы
