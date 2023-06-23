@@ -4,6 +4,7 @@
 import pwd
 import random
 import requests
+import time
 from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
 from sys import platform
@@ -24,7 +25,7 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	local.buffer["user"] = user
-	local.buffer["vuser"] = "validator7"
+	local.buffer["vuser"] = "validator8"
 	local.buffer["cport"] = random.randint(2000, 65000)
 	local.buffer["lport"] = random.randint(2000, 65000)
 
@@ -323,6 +324,8 @@ def FirstNodeSettings():
 	args = [validatorAppPath, "--global-config", globalConfigPath, "--db", tonDbDir, "--ip", addr]
 	local.AddLog(args, "debug")
 	subprocess.run(args)
+
+	time.sleep(60)
 
 	# Скачать дамп
 	DownloadDump()
