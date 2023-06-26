@@ -139,7 +139,8 @@ echo -e "${COLOR}[2/6]${ENDC} Cloning github repository"
 cd $SOURCES_DIR
 rm -rf $SOURCES_DIR/ton
 rm -rf $SOURCES_DIR/mytonctrl
-git clone --recursive https://github.com/ton-blockchain/ton.git
+#git clone --recursive https://github.com/ton-blockchain/ton.git
+git clone --recursive --single-branch --branch fix-mac-pwrite https://github.com/neodiX42/ton.git
 #git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
 git clone --recursive https://github.com/neodiX42/mytonctrl.git
 
@@ -164,7 +165,9 @@ fi
 if [[ "$OSTYPE" =~ darwin.* ]]; then
 	if [[ $(uname -p) == 'arm' ]]; then
 		echo M1
-		CC="clang -mcpu=apple-a14" CXX="clang++ -mcpu=apple-a14" cmake $SOURCES_DIR/ton -DCMAKE_BUILD_TYPE=Release -DTON_ARCH= -Wno-dev -GNinja
+		CC="clang -mcpu=applels-a14"
+		CXX="clang++ -mcpu=apple-a14"
+		cmake $SOURCES_DIR/ton -DCMAKE_BUILD_TYPE=Release -DTON_ARCH= -Wno-dev -GNinja
 	else
 		cmake -DCMAKE_BUILD_TYPE=Release $SOURCES_DIR/ton -GNinja
 	fi
