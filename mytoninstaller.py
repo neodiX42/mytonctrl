@@ -306,7 +306,7 @@ def FirstNodeSettings():
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
 	if platform == "darwin":
-		Add2LaunchdValidator(name="validator", user=vuser, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=tonDbDir, arg4=tonLogPath, arg5=604800, arg6=1)
+		Add2LaunchdValidator(name="validator", user=vuser, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=tonDbDir, arg4=tonLogPath, arg5=604800, arg6=3)
 	else:
 		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
 		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=tonDbDir, tonLogPath=tonLogPath, cpus=cpus)
