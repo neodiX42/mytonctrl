@@ -140,7 +140,7 @@ cd $SOURCES_DIR
 rm -rf $SOURCES_DIR/ton
 rm -rf $SOURCES_DIR/mytonctrl
 #git clone --recursive https://github.com/ton-blockchain/ton.git
-git clone --recursive --single-branch --branch fix-mac-pwrite https://github.com/neodiX42/ton.git
+git clone --recursive --single-branch --branch fix-mac-write https://github.com/neodiX42/ton.git
 #git clone --recursive https://github.com/ton-blockchain/mytonctrl.git
 git clone --recursive https://github.com/neodiX42/mytonctrl.git
 
