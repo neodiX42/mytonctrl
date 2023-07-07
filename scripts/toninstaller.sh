@@ -165,8 +165,8 @@ fi
 if [[ "$OSTYPE" =~ darwin.* ]]; then
 	if [[ $(uname -p) == 'arm' ]]; then
 		echo M1
-		CC="clang -mcpu=applels-a14"
-		CXX="clang++ -mcpu=apple-a14"
+#		CC="clang -mcpu=applels-a14"
+#		CXX="clang++ -mcpu=apple-a14"
 		cmake $SOURCES_DIR/ton -DCMAKE_BUILD_TYPE=Release -DTON_ARCH= -Wno-dev -GNinja
 	else
 		cmake -DCMAKE_BUILD_TYPE=Release $SOURCES_DIR/ton -GNinja
