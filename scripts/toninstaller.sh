@@ -139,8 +139,8 @@ echo -e "${COLOR}[2/6]${ENDC} Cloning github repository"
 cd $SOURCES_DIR
 rm -rf $SOURCES_DIR/ton
 rm -rf $SOURCES_DIR/mytonctrl
-git clone --recursive --single-branch --branch more-oses https://github.com/neodiX42/ton.git
-git clone --recursive https://github.com/neodiX42/mytonctrl.git
+git clone --recursive --single-branch --branch integrate-libs https://github.com/neodiX42/ton.git
+git clone --recursive --single-branch --branch more-oses https://github.com/neodiX42/mytonctrl.git
 
 git config --global --add safe.directory $SOURCES_DIR/ton
 git config --global --add safe.directory $SOURCES_DIR/mytonctrl
