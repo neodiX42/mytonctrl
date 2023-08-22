@@ -363,10 +363,11 @@ def DownloadDump():
 def FirstMytoncoreSettings():
 	local.add_log("start FirstMytoncoreSettings function", "debug")
 	user = local.buffer.user
+	srcDir = local.buffer.src_dir
 
 	# Прописать mytoncore.py в автозагрузку
 	if platform == "darwin":
-		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=src_dir))
+		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
 	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
