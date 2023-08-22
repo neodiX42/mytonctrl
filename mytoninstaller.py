@@ -312,7 +312,7 @@ def FirstNodeSettings():
 	subprocess.run(args)
 
 	# todo restore rights
-	args = ["chmod", "666", vconfigPath]
+	args = ["chmod", "666", vconfig_path]
 	subprocess.run(args)
 
 	time.sleep(15)
@@ -328,7 +328,7 @@ def FirstNodeSettings():
 		#args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
 		local.AddLog("skip", "debug")
 	else:
-		args = ["chown", "-R", vuser + ':' + vuser, tonWorkDir]
+		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
 
 	# start validator
