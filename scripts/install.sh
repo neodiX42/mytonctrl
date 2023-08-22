@@ -56,7 +56,13 @@ else
   cpus=$(lscpu | grep "CPU(s)" | head -n 1 | awk '{print $2}')
 fi
 
-memory=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  memory=$(sysctl -a | grep hw.memsize | awk '{print $2}')
+  memory=$((memory / 1024))
+else
+  memory=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+fi
+
 if [ "${mode}" = "lite" ] && [ "$ignore" = false ] && ([ "${cpus}" -lt 2 ] || [ "${memory}" -lt 2000000 ]); then
 	echo "Insufficient resources. Requires a minimum of 2 processors and 2Gb RAM."
 	exit 1
