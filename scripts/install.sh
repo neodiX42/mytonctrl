@@ -50,7 +50,12 @@ if [ "${mode}" != "lite" ] && [ "${mode}" != "full" ]; then
 fi
 
 # Проверка мощностей
-cpus=$(lscpu | grep "CPU(s)" | head -n 1 | awk '{print $2}')
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  cpus=$(sysctl -a | grep cpu | grep hw.ncpu | awk '{print $2}')
+else
+  cpus=$(lscpu | grep "CPU(s)" | head -n 1 | awk '{print $2}')
+fi
+
 memory=$(grep MemTotal /proc/meminfo | awk '{print $2}')
 if [ "${mode}" = "lite" ] && [ "$ignore" = false ] && ([ "${cpus}" -lt 2 ] || [ "${memory}" -lt 2000000 ]); then
 	echo "Insufficient resources. Requires a minimum of 2 processors and 2Gb RAM."

@@ -323,10 +323,10 @@ def FirstNodeSettings():
 	# chown 1
 	local.add_log("Chown ton-work dir", "debug")
 	args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
-	local.AddLog("Chown ton-work dir", "debug")
+	local.add_log("Chown ton-work dir", "debug")
 	if platform == "darwin":
 		#args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
-		local.AddLog("skip", "debug")
+		local.add_log("skip", "debug")
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
@@ -500,7 +500,7 @@ def EnableValidatorConsole():
 	# chown 1
 	if platform == "darwin":
 		args = ["chown", user + ':' + "staff", newKeyPath]
-		local.AddLog("skip3", "debug")
+		local.add_log("skip3", "debug")
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 
@@ -509,7 +509,7 @@ def EnableValidatorConsole():
 	# chown 2
 	if platform == "darwin":
 		args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
-		local.AddLog("skip4", "debug")
+		local.add_log("skip4", "debug")
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
@@ -1063,7 +1063,7 @@ def EnableDhtServer():
 	# chown 1
 	if platform == "darwin":
 		#args = ["chown", "-R", user + ':' + "staff", tonDhtServerDir]
-		local.AddLog("skip7", "debug")
+		local.add_log("skip7", "debug")
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
