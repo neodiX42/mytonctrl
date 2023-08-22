@@ -286,7 +286,7 @@ class MyTonCore():
 
 	def Init(self):
 		# Check all directories
-		local.AddLog("Mytoncore: " + self.walletsDir, "warning")
+		local.add_log("Mytoncore: " + self.walletsDir, "warning")
 		os.makedirs(self.walletsDir, exist_ok=True)
 		os.makedirs(self.contractsDir, exist_ok=True)
 		os.makedirs(self.poolsDir, exist_ok=True)

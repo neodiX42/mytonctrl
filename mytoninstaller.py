@@ -274,8 +274,11 @@ def FirstNodeSettings():
 	#end if
 
 	if platform == "darwin":
-		args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGUTGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
-		subprocess.run(args)
+		try:
+			pwd.getpwnam(vuser)
+		except KeyError:
+			args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGUTGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
+			subprocess.run(args)
 	else:
 		# Создать Линукс пользователя
 		file = open("/etc/passwd", 'rt')
@@ -322,10 +325,8 @@ def FirstNodeSettings():
 
 	# chown 1
 	local.add_log("Chown ton-work dir", "debug")
-	args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
-	local.add_log("Chown ton-work dir", "debug")
 	if platform == "darwin":
-		#args = ["chown", "-R", user + ':' + "staff", tonWorkDir]
+		#args = ["chown", "-R", user + ':' + "staff", ton_work_dir]
 		local.add_log("skip", "debug")
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
