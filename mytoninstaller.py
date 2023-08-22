@@ -366,7 +366,7 @@ def FirstMytoncoreSettings():
 
 	# Прописать mytoncore.py в автозагрузку
 	if platform == "darwin":
-		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
+		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=src_dir))
 	else:
 	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
@@ -1142,5 +1142,5 @@ if __name__ == "__main__":
 		General()
 	else:
 		console.Run()
-	local.exit()
+	local.exit(None, None)
 #end if
