@@ -8,6 +8,7 @@ import hashlib
 import requests
 import re
 from mypylib.mypylib import *
+from sys import platform
 
 local = MyPyClass(__file__)
 
@@ -3855,8 +3856,9 @@ def CalculateDiskStatistics(zerodata, data, name):
 #end define
 
 def GetDisksList():
+	print("GetDisksList")
 	data = list()
-	buff = os.listdir("/sys/block/")
+	buff = subprocess.run(["diskutil list | grep dev"]) if platform == "darwin" else os.listdir("/sys/block/")
 	for item in buff:
 		if "loop" in item:
 			continue
@@ -3867,6 +3869,7 @@ def GetDisksList():
 #end define
 
 def ReadNetworkData():
+	print("ReadNetworkData")
 	timestamp = get_timestamp()
 	interfaceName = get_internet_interface_name()
 	buff = psutil.net_io_counters(pernic=True)

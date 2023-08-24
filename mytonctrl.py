@@ -5,6 +5,7 @@ from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
 from mytoncore import *
 import sys, getopt, os
+from sys import platform
 
 local = MyPyClass(__file__)
 console = MyPyConsole()
