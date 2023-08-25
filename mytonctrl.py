@@ -200,7 +200,7 @@ def Update(args):
 	else:
 		text = "Update - {red}Error{endc}"
 	color_print(text)
-	local.exit()
+	local.exit(None, None)
 #end define
 
 def Upgrade(args):
@@ -392,20 +392,23 @@ def PrintLocalStatus(adnlAddr, validatorIndex, validatorEfficiency, validatorWal
 	netLoad_text = local.translate("local_status_net_load").format(netLoad1_text, netLoad5_text, netLoad15_text)
 
 	# Disks status
-	disksLoad_data = list()
-	for key, item in disksLoadAvg.items():
-		diskLoad1_text = bcolors.green_text(item[0])
-		diskLoad5_text = bcolors.green_text(item[1])
-		diskLoad15_text = bcolors.green_text(item[2])
-		diskLoadPercent1_text = GetColorInt(disksLoadPercentAvg[key][0], 80, logic="less", ending="%")
-		diskLoadPercent5_text = GetColorInt(disksLoadPercentAvg[key][1], 80, logic="less", ending="%")
-		diskLoadPercent15_text = GetColorInt(disksLoadPercentAvg[key][2], 80, logic="less", ending="%")
-		buff = "{}, {}"
-		buff = "{}{}:[{}{}{}]{}".format(bcolors.cyan, key, bcolors.default, buff, bcolors.cyan, bcolors.endc)
-		disksLoad_buff = buff.format(diskLoad15_text, diskLoadPercent15_text)
-		disksLoad_data.append(disksLoad_buff)
-	disksLoad_data = ", ".join(disksLoad_data)
-	disksLoad_text = local.translate("local_status_disks_load").format(disksLoad_data)
+	if disksLoadAvg:
+		disksLoad_data = list()
+		for key, item in disksLoadAvg.items():
+			diskLoad1_text = bcolors.green_text(item[0])
+			diskLoad5_text = bcolors.green_text(item[1])
+			diskLoad15_text = bcolors.green_text(item[2])
+			diskLoadPercent1_text = GetColorInt(disksLoadPercentAvg[key][0], 80, logic="less", ending="%")
+			diskLoadPercent5_text = GetColorInt(disksLoadPercentAvg[key][1], 80, logic="less", ending="%")
+			diskLoadPercent15_text = GetColorInt(disksLoadPercentAvg[key][2], 80, logic="less", ending="%")
+			buff = "{}, {}"
+			buff = "{}{}:[{}{}{}]{}".format(bcolors.cyan, key, bcolors.default, buff, bcolors.cyan, bcolors.endc)
+			disksLoad_buff = buff.format(diskLoad15_text, diskLoadPercent15_text)
+			disksLoad_data.append(disksLoad_buff)
+		disksLoad_data = ", ".join(disksLoad_data)
+		disksLoad_text = local.translate("local_status_disks_load").format(disksLoad_data)
+	else:
+		local.add_log("Can't retrieve disks' information", "warning")
 
 	# Thread status
 	mytoncoreStatus_bool = get_service_status("mytoncore")
@@ -448,7 +451,8 @@ def PrintLocalStatus(adnlAddr, validatorIndex, validatorEfficiency, validatorWal
 	print(netLoad_text)
 	print(memoryLoad_text)
 	
-	print(disksLoad_text)
+	if disksLoadAvg:
+		print(disksLoad_text)
 	print(mytoncoreStatus_text)
 	print(validatorStatus_text)
 	print(validatorOutOfSync_text)

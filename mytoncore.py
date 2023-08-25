@@ -3735,7 +3735,7 @@ def Event(eventName):
 		EnableVcEvent()
 	elif eventName == "validator down":
 		ValidatorDownEvent()
-	local.exit()
+	local.exit(None, None)
 #end define
 
 def EnableVcEvent():
