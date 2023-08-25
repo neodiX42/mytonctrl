@@ -3785,13 +3785,15 @@ def ReadDiskData():
 	buff = psutil.disk_io_counters(perdisk=True)
 	data = dict()
 	for name in disks:
-		data[name] = dict()
-		data[name]["timestamp"] = timestamp
-		data[name]["busyTime"] = 0 if platform == "darwin" else buff[name].busy_time
-		data[name]["readBytes"] = buff[name].read_bytes
-		data[name]["writeBytes"] = buff[name].write_bytes
-		data[name]["readCount"] = buff[name].read_count
-		data[name]["writeCount"] = buff[name].write_count
+		try:
+			data[name] = dict()
+			data[name]["timestamp"] = timestamp
+			data[name]["busyTime"] = 0 if platform == "darwin" else buff[name].busy_time
+			data[name]["readBytes"] = buff[name].read_bytes
+			data[name]["writeBytes"] = buff[name].write_bytes
+			data[name]["readCount"] = buff[name].read_count
+			data[name]["writeCount"] = buff[name].write_count
+		except: pass
 	#end for
 
 	local.buffer.diskio.pop(0)
