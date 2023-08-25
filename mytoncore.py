@@ -3856,20 +3856,26 @@ def CalculateDiskStatistics(zerodata, data, name):
 #end define
 
 def GetDisksList():
-	print("GetDisksList")
+	local.add_log("GetDisksList", "debug")
 	data = list()
-	buff = subprocess.run(["diskutil list | grep dev"]) if platform == "darwin" else os.listdir("/sys/block/")
-	for item in buff:
+	if platform == "darwin":
+		buff = subprocess.getoutput("diskutil list | grep dev | awk '{print $1}'")
+		lines = buff.split('\n')
+	else:
+		lines = os.listdir("/sys/block/")
+
+	for item in lines:
 		if "loop" in item:
 			continue
 		data.append(item)
 	#end for
+
 	data.sort()
 	return data
 #end define
 
 def ReadNetworkData():
-	print("ReadNetworkData")
+	local.add_log("ReadNetworkData", "debug")
 	timestamp = get_timestamp()
 	interfaceName = get_internet_interface_name()
 	buff = psutil.net_io_counters(pernic=True)
