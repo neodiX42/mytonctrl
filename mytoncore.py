@@ -3816,7 +3816,7 @@ def SaveDiskStatistics():
 	iopsAvg = dict()
 	disks = GetDisksList()
 	for name in disks:
-	    try:
+		try:
 			if zerodata[name]["busyTime"] == 0:
 				continue
 			diskLoad1, diskLoadPercent1, iops1 = CalculateDiskStatistics(zerodata, buff1, name)
