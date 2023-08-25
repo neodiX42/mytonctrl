@@ -407,8 +407,6 @@ def PrintLocalStatus(adnlAddr, validatorIndex, validatorEfficiency, validatorWal
 			disksLoad_data.append(disksLoad_buff)
 		disksLoad_data = ", ".join(disksLoad_data)
 		disksLoad_text = local.translate("local_status_disks_load").format(disksLoad_data)
-	else:
-		local.add_log("Can't retrieve disks' information", "warning")
 
 	# Thread status
 	mytoncoreStatus_bool = get_service_status("mytoncore")
