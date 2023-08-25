@@ -3787,7 +3787,7 @@ def ReadDiskData():
 	for name in disks:
 		data[name] = dict()
 		data[name]["timestamp"] = timestamp
-		data[name]["busyTime"] = buff[name].busy_time
+		data[name]["busyTime"] = 0 if platform == "darwin" else buff[name].busy_time
 		data[name]["readBytes"] = buff[name].read_bytes
 		data[name]["writeBytes"] = buff[name].write_bytes
 		data[name]["readCount"] = buff[name].read_count
