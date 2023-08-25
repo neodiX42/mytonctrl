@@ -204,6 +204,7 @@ def Update(args):
 #end define
 
 def Upgrade(args):
+	binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
 	repo = "ton"
 	author, repo, branch = check_git(args, repo, "upgrade")
 
@@ -213,22 +214,22 @@ def Upgrade(args):
 	pubkeyPath = liteClient.get("liteServer").get("pubkeyPath")
 	if "ton-lite-client-test1" in configPath:
 		liteClient["configPath"] = configPath.replace("lite-client/ton-lite-client-test1.config.json", "global.config.json")
-	if "/usr/bin/ton" in pubkeyPath:
+	if (binDir + "ton") in pubkeyPath:
 		liteClient["liteServer"]["pubkeyPath"] = "/var/ton-work/keys/liteserver.pub"
 	ton.SetSettings("liteClient", liteClient)
 	validatorConsole = ton.GetSettings("validatorConsole")
 	privKeyPath = validatorConsole.get("privKeyPath")
 	pubKeyPath = validatorConsole.get("pubKeyPath")
-	if "/usr/bin/ton" in privKeyPath:
+	if (binDir + "ton") in privKeyPath:
 		validatorConsole["privKeyPath"] = "/var/ton-work/keys/client"
-	if "/usr/bin/ton" in pubKeyPath:
+	if (binDir + "ton") in pubKeyPath:
 		validatorConsole["pubKeyPath"] = "/var/ton-work/keys/server.pub"
 	ton.SetSettings("validatorConsole", validatorConsole)
 
 	# Run script
 	runArgs = ["bash", srcDir + "mytonctrl/scripts/upgrade.sh", "-a", author, "-r", repo, "-b", branch]
 	exitCode = run_as_root(runArgs)
-	exitCode += run_as_root(["python3", srcDir + "/mytonctrl/scripts/upgrade.py"])
+	exitCode += run_as_root(["python3", srcDir + "mytonctrl/scripts/upgrade.py"])
 	if exitCode == 0:
 		text = "Upgrade - {green}OK{endc}"
 	else:
@@ -423,9 +424,9 @@ def PrintLocalStatus(adnlAddr, validatorIndex, validatorEfficiency, validatorWal
 	dbStatus_text = local.translate("local_status_db").format(dbSize_text, dbUsage_text)
 	
 	# Mytonctrl and validator git hash
-	mtcGitPath = "/usr/src/mytonctrl"
-	validatorGitPath = "/usr/src/ton"
-	validatorBinGitPath = "/usr/bin/ton/validator-engine/validator-engine"
+	mtcGitPath = srcDir + "mytonctrl"
+	validatorGitPath = tonSrcDir
+	validatorBinGitPath = tonSrcDir + "validator-engine/validator-engine"
 	mtcGitHash = get_git_hash(mtcGitPath, short=True)
 	validatorGitHash = GetBinGitHash(validatorBinGitPath, short=True)
 	mtcGitBranch = get_git_branch(mtcGitPath)

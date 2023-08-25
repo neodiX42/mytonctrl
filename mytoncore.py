@@ -3383,6 +3383,7 @@ class MyTonCore():
 
 	def DownloadContract(self, url, branch=None):
 		local.add_log("start DownloadContract function", "debug")
+		binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
 		buff = url.split('/')
 		gitPath = self.contractsDir + buff[-1] + '/'
 
@@ -3396,7 +3397,7 @@ class MyTonCore():
 
 		if not os.path.isfile(gitPath + "build.sh"):
 			return
-		if not os.path.isfile("/usr/bin/func"):
+		if not os.path.isfile(binDir + "func"):
 			return
 		#	file = open("/usr/bin/func", 'wt')
 		#	file.write("/usr/bin/ton/crypto/func $@")
@@ -4072,6 +4073,8 @@ def GetValidatorProcessInfo():
 #end define
 
 def Telemetry(ton):
+	srcDir = "/usr/local/src/" if platform == "darwin" else "/usr/src/"
+	binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
 	sendTelemetry = local.db.get("sendTelemetry")
 	if sendTelemetry is not True:
 		return
@@ -4099,8 +4102,8 @@ def Telemetry(ton):
 
 	# Get git hashes
 	gitHashes = dict()
-	gitHashes["mytonctrl"] = get_git_hash("/usr/src/mytonctrl")
-	gitHashes["validator"] = GetBinGitHash("/usr/bin/ton/validator-engine/validator-engine")
+	gitHashes["mytonctrl"] = get_git_hash(srcDir + "mytonctrl")
+	gitHashes["validator"] = GetBinGitHash(binDir + "ton/validator-engine/validator-engine")
 	data["gitHashes"] = gitHashes
 	data["stake"] = local.db.get("stake")
 	

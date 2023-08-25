@@ -382,7 +382,7 @@ def FirstMytoncoreSettings():
 
 	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
 	if os.path.isfile(path) or os.path.isfile(path2):
-		local.add_log("mytoncore.db already exist. Break FirstMytoncoreSettings fuction", "warning")
+		local.add_log("mytoncore.db already exist. Break FirstMytoncoreSettings function", "warning")
 		return
 	#end if
 
