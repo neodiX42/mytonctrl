@@ -3816,14 +3816,16 @@ def SaveDiskStatistics():
 	iopsAvg = dict()
 	disks = GetDisksList()
 	for name in disks:
-		if zerodata[name]["busyTime"] == 0:
-			continue
-		diskLoad1, diskLoadPercent1, iops1 = CalculateDiskStatistics(zerodata, buff1, name)
-		diskLoad5, diskLoadPercent5, iops5 = CalculateDiskStatistics(zerodata, buff5, name)
-		diskLoad15, diskLoadPercent15, iops15 = CalculateDiskStatistics(zerodata, buff15, name)
-		disksLoadAvg[name] = [diskLoad1, diskLoad5, diskLoad15]
-		disksLoadPercentAvg[name] = [diskLoadPercent1, diskLoadPercent5, diskLoadPercent15]
-		iopsAvg[name] = [iops1, iops5, iops15]
+	    try:
+			if zerodata[name]["busyTime"] == 0:
+				continue
+			diskLoad1, diskLoadPercent1, iops1 = CalculateDiskStatistics(zerodata, buff1, name)
+			diskLoad5, diskLoadPercent5, iops5 = CalculateDiskStatistics(zerodata, buff5, name)
+			diskLoad15, diskLoadPercent15, iops15 = CalculateDiskStatistics(zerodata, buff15, name)
+			disksLoadAvg[name] = [diskLoad1, diskLoad5, diskLoad15]
+			disksLoadPercentAvg[name] = [diskLoadPercent1, diskLoadPercent5, diskLoadPercent15]
+			iopsAvg[name] = [iops1, iops5, iops15]
+		except: pass
 	#end fore
 
 	# save statistics
