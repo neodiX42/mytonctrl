@@ -3859,7 +3859,7 @@ def GetDisksList():
 	local.add_log("GetDisksList", "debug")
 	data = list()
 	if platform == "darwin":
-		buff = subprocess.getoutput("diskutil list | grep dev | awk '{print $1}'")
+		buff = subprocess.getoutput("diskutil list | grep dev | awk '{print $1}' | cut -c 6-")
 		lines = buff.split('\n')
 	else:
 		lines = os.listdir("/sys/block/")
