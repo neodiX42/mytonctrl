@@ -3786,6 +3786,7 @@ def ReadDiskData():
 	data = dict()
 	for name in disks:
 		try:
+			local.add_log("reading device " + name, "debug")
 			data[name] = dict()
 			data[name]["timestamp"] = timestamp
 			data[name]["busyTime"] = 0 if platform == "darwin" else buff[name].busy_time
@@ -3819,6 +3820,7 @@ def SaveDiskStatistics():
 	disks = GetDisksList()
 	for name in disks:
 		try:
+			local.add_log("saving device data " + name, "debug")
 			if zerodata[name]["busyTime"] == 0:
 				continue
 			diskLoad1, diskLoadPercent1, iops1 = CalculateDiskStatistics(zerodata, buff1, name)
