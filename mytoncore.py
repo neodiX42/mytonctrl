@@ -297,9 +297,11 @@ class MyTonCore():
 		if self.dbFile:
 			local.load_db(self.dbFile)
 		#end if
+		print("walletsDir1: "+self.walletsDir)
 
 		if not self.walletsDir:
 			self.walletsDir = local.buffer.my_work_dir + "wallets/"
+		print("walletsDi2: "+self.walletsDir)
 		self.contractsDir = local.buffer.my_work_dir + "contracts/"
 		self.poolsDir = local.buffer.my_work_dir + "pools/"
 		self.tempDir = local.buffer.my_temp_dir
