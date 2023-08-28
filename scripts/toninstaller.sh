@@ -101,8 +101,8 @@ elif [[ "$OSTYPE" =~ darwin.* ]]; then
 		$BIN_DIR/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	fi
 
-	su $USER -c "brew update"
-	su $USER -c "brew install openssl cmake llvm ninja"
+	su $SUDO_USER -c "brew update"
+	su $SUDO_USER -c "brew install openssl cmake llvm ninja"
 	export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 
 elif [ "$OSTYPE" == "freebsd"* ]; then
