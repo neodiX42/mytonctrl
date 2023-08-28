@@ -356,7 +356,7 @@ def DownloadDump():
 #end define
 
 def FirstMytoncoreSettings():
-	local.add_log("start FirstMytoncoreSettings function", "debug")
+	local.add_log("start FirstMytoncoreSettings function "+local.buffer.user, "debug")
 	user = local.buffer.user
 	srcDir = local.buffer.src_dir
 
