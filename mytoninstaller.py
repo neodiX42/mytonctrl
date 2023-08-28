@@ -961,9 +961,6 @@ def CreateSymlinks():
 	binDir = local.buffer.bin_dir
 	srcDir = local.buffer.src_dir
 
-	if platform == "darwin" and (os.getenv("USER") == 'root'):
-		binDir = "/usr/bin/"
-
 	mytonctrl_file = binDir + "mytonctrl"
 	fift_file = binDir + "fift"
 	liteclient_file = binDir + "lite-client"
@@ -990,12 +987,16 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
+	localbinpath = "export PATH=$PATH:/usr/local/bin"
 	if platform == "darwin":
 		env_file = "/etc/profile"
 		file = open(env_file, 'rt+')
 		text = file.read()
 		if fiftpath not in text:
 			file.write(fiftpath + '\n')
+		if localbinpath not in text:
+			file.write(localbinpath + '\n')
+
 		file.close()
 	else:
 		env_file = "/etc/environment"
