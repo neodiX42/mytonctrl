@@ -273,13 +273,7 @@ def FirstNodeSettings():
 		return
 	#end if
 
-	if platform == "darwin":
-		try:
-			pwd.getpwnam(vuser)
-		except KeyError:
-			args = ["sysadminctl", "-addUser", vuser, "-password", "KJHSAKDGUTGKHJBKJSBAKJDBKJASBDKJBSDKJABDAKJSDaa"] # review
-			subprocess.run(args)
-	else:
+	if platform != "darwin":
 		# Создать Линукс пользователя
 		file = open("/etc/passwd", 'rt')
 		text = file.read()
@@ -297,7 +291,7 @@ def FirstNodeSettings():
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
 	if platform == "darwin":
-		Add2LaunchdValidator(name="validator", user=vuser, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=4)
+		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=4)
 	else:
 		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
 		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=ton_db_dir, tonLogPath=tonLogPath, cpus=cpus)
@@ -1030,7 +1024,7 @@ def EnableDhtServer():
 
 	# Прописать автозагрузку
 	if platform == "darwin":
-		Add2LaunchdDhtServer(name="dht-server", user=vuser, start=dht_server, arg1=globalConfigPath, arg2=tonDhtServerDir)
+		Add2LaunchdDhtServer(name="dht-server", user=user, start=dht_server, arg1=globalConfigPath, arg2=tonDhtServerDir)
 	else:
 		cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
 		cmd = cmd.format(dht_server=dht_server, globalConfigPath=globalConfigPath, tonDhtServerDir=tonDhtServerDir)
