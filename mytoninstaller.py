@@ -966,10 +966,11 @@ def CreateSymlinks():
 	liteclient_file = binDir + "lite-client"
 	validator_console_file = binDir + "validator-console"
 
+	if platform != "darwin":
+		file = open(mytonctrl_file, 'wt')
+		file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
+		file.close()
 
-	file = open(mytonctrl_file, 'wt')
-	file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
-	file.close()
 	file = open(fift_file, 'wt')
 	file.write(tonBinDir + "crypto/fift $@")
 	file.close()
