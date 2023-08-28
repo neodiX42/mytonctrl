@@ -989,7 +989,7 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
-	mtcalias = "/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@"
+	mtcalias = "alias mytonctrl=\"/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@\""
 	if platform == "darwin":
 		env_file = "/etc/profile"
 		file = open(env_file, 'rt+')
