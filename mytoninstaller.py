@@ -970,6 +970,9 @@ def CreateSymlinks():
 		file = open(mytonctrl_file, 'wt')
 		file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
 		file.close()
+		args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
+		subprocess.run(args)
+
 
 	file = open(fift_file, 'wt')
 	file.write(tonBinDir + "crypto/fift $@")
@@ -983,8 +986,6 @@ def CreateSymlinks():
 		file.close()
 		args = ["chmod", "+x", validator_console_file]
 		subprocess.run(args)
-	args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
-	subprocess.run(args)
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
