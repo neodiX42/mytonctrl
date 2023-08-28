@@ -987,16 +987,15 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
-	localbinpath = "export PATH=$PATH:/usr/local/bin"
+	mtcalias = "/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@"
 	if platform == "darwin":
 		env_file = "/etc/profile"
 		file = open(env_file, 'rt+')
 		text = file.read()
 		if fiftpath not in text:
 			file.write(fiftpath + '\n')
-		if localbinpath not in text:
-			file.write(localbinpath + '\n')
-
+		if mtcalias not in text:
+			file.write(mtcalias + '\n')
 		file.close()
 	else:
 		env_file = "/etc/environment"
