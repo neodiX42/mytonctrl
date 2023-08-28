@@ -961,6 +961,9 @@ def CreateSymlinks():
 	binDir = local.buffer.bin_dir
 	srcDir = local.buffer.src_dir
 
+	if platform == "darwin" and (os.getenv("USER") == 'root'):
+		binDir = "/usr/bin/"
+
 	mytonctrl_file = binDir + "mytonctrl"
 	fift_file = binDir + "fift"
 	liteclient_file = binDir + "lite-client"
