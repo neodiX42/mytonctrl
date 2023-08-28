@@ -291,7 +291,7 @@ def FirstNodeSettings():
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
 	if platform == "darwin":
-		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=4)
+		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=1)
 	else:
 		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
 		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=ton_db_dir, tonLogPath=tonLogPath, cpus=cpus)
@@ -356,14 +356,15 @@ def DownloadDump():
 #end define
 
 def FirstMytoncoreSettings():
-	local.add_log("start FirstMytoncoreSettings function "+local.buffer.user, "debug")
+	local.add_log("start FirstMytoncoreSettings function", "debug")
+	user = local.buffer.user
 	srcDir = local.buffer.src_dir
 
 	# Прописать mytoncore.py в автозагрузку
 	if platform == "darwin":
-		Add2LaunchdMyTonCore(name="mytoncore", user=local.buffer.user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
+		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
-	    add2systemd(name="mytoncore", user=local.buffer.user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
+	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
 	if platform == "linux":
