@@ -298,9 +298,9 @@ def FirstNodeSettings():
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
 	if platform == "darwin":
-		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=1)
+		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=4)
 	else:
-		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
+		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity "
 		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=ton_db_dir, tonLogPath=tonLogPath, cpus=cpus)
 		add2systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
@@ -975,13 +975,11 @@ def CreateSymlinks():
 	liteclient_file = binDir + "lite-client"
 	validator_console_file = binDir + "validator-console"
 
-	if platform != "darwin":
-		file = open(mytonctrl_file, 'wt')
-		file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
-		file.close()
-		args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
-		subprocess.run(args)
-
+	file = open(mytonctrl_file, 'wt')
+	file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
+	file.close()
+	args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
+	subprocess.run(args)
 
 	file = open(fift_file, 'wt')
 	file.write(tonBinDir + "crypto/fift $@")
@@ -998,15 +996,12 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
-	mtcalias = "alias mytonctrl=\"/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@\""
 	if platform == "darwin":
 		env_file = "/etc/profile"
 		file = open(env_file, 'rt+')
 		text = file.read()
 		if fiftpath not in text:
 			file.write(fiftpath + '\n')
-		if mtcalias not in text:
-			file.write(mtcalias + '\n')
 		file.close()
 	else:
 		env_file = "/etc/environment"
