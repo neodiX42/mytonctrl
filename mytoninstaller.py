@@ -168,10 +168,7 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 	# chown
 	user = local.buffer.user
 	user = local.buffer.group
-	if platform == "darwin":
-		args = ["chown", "-R", user + ':' + group, localConfigPath]
-	else:
-		args = ["chown", "-R", user + ':' + user, localConfigPath]
+	args = ["chown", "-R", user + ':' + group, localConfigPath]
 
 	print("Local config file created:", localConfigPath)
 #end define
@@ -964,6 +961,9 @@ def CreateSymlinks():
 	local.add_log("start CreateSymlinks function", "debug")
 	cport = local.buffer.cport
 
+	user = local.buffer.user
+	group = local.buffer.group
+
 	tonBinDir = local.buffer.ton_bin_dir
 	tonSrcDir = local.buffer.ton_src_dir
 
@@ -993,6 +993,9 @@ def CreateSymlinks():
 		file.close()
 		args = ["chmod", "+x", validator_console_file]
 		subprocess.run(args)
+
+	args = ["chown", "-R", user + ':' + group, bin_dir]
+	subprocess.run(args)
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
