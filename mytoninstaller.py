@@ -978,15 +978,15 @@ def CreateSymlinks():
 	file = open(mytonctrl_file, 'wt')
 	file.write("/usr/bin/python3 "+ srcDir + "mytonctrl/mytonctrl.py $@")
 	file.close()
-	args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
-	subprocess.run(args)
-
 	file = open(fift_file, 'wt')
 	file.write(tonBinDir + "crypto/fift $@")
 	file.close()
 	file = open(liteclient_file, 'wt')
 	file.write(tonBinDir + "lite-client/lite-client -C "+ tonBinDir + "global.config.json $@")
 	file.close()
+	args = ["chmod", "+x", mytonctrl_file, fift_file, liteclient_file]
+	subprocess.run(args)
+
 	if cport:
 		file = open(validator_console_file, 'wt')
 		file.write(tonBinDir + "validator-engine-console/validator-engine-console -k /var/ton-work/keys/client -p /var/ton-work/keys/server.pub -a 127.0.0.1:" + str(cport) + " $@")
