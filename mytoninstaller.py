@@ -48,13 +48,18 @@ def Init():
 
 def Refresh():
 	user = local.buffer.user
-	if platform == "darwin":
-		local.buffer.mconfig_path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
-	else:
-		local.buffer.mconfig_path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+
 
 	if user == 'root':
-		local.buffer.mconfig_path = "/usr/local/bin/mytoncore/mytoncore.db"
+		if platform == "darwin":
+			local.buffer.mconfig_path = "/var/root/.local/share/mytoncore/mytoncore.db"
+		else:
+			local.buffer.mconfig_path = "/usr/local/bin/mytoncore/mytoncore.db"
+	else:
+		if platform == "darwin":
+			local.buffer.mconfig_path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+		else:
+			local.buffer.mconfig_path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
 	#end if
 
 	# create variables
@@ -376,15 +381,18 @@ def FirstMytoncoreSettings():
 	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
-	if platform == "linux":
-		path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
-	elif platform == "darwin":
-		path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	if user == 'root':
+		if platform == "darwin":
+			path = "/var/root/.local/share/mytoncore/mytoncore.db"
+		else:
+			path = "/usr/local/bin/mytoncore/mytoncore.db"
 	else:
-		ColorPrint("unsupported platform")
+		if platform == "darwin":
+			path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+		else:
+			path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
 
-	path2 = "/usr/local/bin/mytoncore/mytoncore.db"
-	if os.path.isfile(path) or os.path.isfile(path2):
+	if os.path.isfile(path) :
 		local.add_log("mytoncore.db already exist. Break FirstMytoncoreSettings function", "warning")
 		return
 	#end if
