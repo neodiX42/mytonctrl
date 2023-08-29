@@ -994,7 +994,7 @@ def CreateSymlinks():
 		args = ["chmod", "+x", validator_console_file]
 		subprocess.run(args)
 
-	args = ["chown", "-R", user + ':' + group, bin_dir]
+	args = ["chown", "-R", user + ':' + group, binDir]
 	subprocess.run(args)
 
 	# env
