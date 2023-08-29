@@ -27,7 +27,7 @@ def Init():
 	group = subprocess.getoutput("id -gn "+user)
 	local.buffer.user = user
 	local.buffer.group = group
-	print("user:group " + user + ":" + group)
+	print("1. user:group " + user + ":" + group)
 	local.buffer.vuser = "validator"
 	local.buffer.cport = random.randint(2000, 65000)
 	local.buffer.lport = random.randint(2000, 65000)
@@ -215,7 +215,10 @@ def General():
 	if "-u" in sys.argv:
 		ux = sys.argv.index("-u")
 		user = sys.argv[ux+1]
+		group = subprocess.getoutput("id -gn "+user)
 		local.buffer.user = user
+		local.buffer.group = group
+		print("2. user:group " + user + ":" + group)
 		Refresh()
 	if "-e" in sys.argv:
 		ex = sys.argv.index("-e")
