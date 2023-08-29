@@ -276,7 +276,7 @@ def FirstNodeSettings():
 
 	# Проверить конфигурацию
 	if os.path.isfile(vconfig_path):
-		local.add_log("Validators config.json already exist. Break FirstNodeSettings fuction", "warning")
+		local.add_log("Validators config.json already exist. Break FirstNodeSettings function", "warning")
 		return
 	#end if
 
@@ -330,6 +330,10 @@ def FirstNodeSettings():
 		args = ["chown", "-R", user + ':' + group, ton_work_dir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
+	subprocess.run(args)
+
+	local.add_log("Chown ton-bin dir", "debug")
+	args = ["chown", "-R", user + ':' + group, local.buffer.ton_bin_dir]
 	subprocess.run(args)
 
 	# start validator
