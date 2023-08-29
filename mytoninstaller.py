@@ -24,7 +24,10 @@ def Init():
 
 	# create variables
 	user = os.environ.get("USER", "root")
+	group = subprocess.getoutput("id -gn "+user)
 	local.buffer.user = user
+	local.buffer.group = group
+	print("user:group " + user + ":" + group)
 	local.buffer.vuser = "validator"
 	local.buffer.cport = random.randint(2000, 65000)
 	local.buffer.lport = random.randint(2000, 65000)
@@ -164,9 +167,9 @@ def CreateLocalConfig(initBlock, localConfigPath=defaultLocalConfigPath):
 
 	# chown
 	user = local.buffer.user
+	user = local.buffer.group
 	if platform == "darwin":
-		#args = ["chown", "-R", user + ':' + "staff", localConfigPath]
-		local.add_log("skip8", "debug")
+		args = ["chown", "-R", user + ':' + group, localConfigPath]
 	else:
 		args = ["chown", "-R", user + ':' + user, localConfigPath]
 
@@ -258,6 +261,7 @@ def FirstNodeSettings():
 
 	# Создать переменные
 	user = local.buffer.user
+	group = local.buffer.group
 	vuser = local.buffer.vuser
 	ton_work_dir = local.buffer.ton_work_dir
 	ton_db_dir = local.buffer.ton_db_dir
@@ -320,8 +324,7 @@ def FirstNodeSettings():
 	# chown 1
 	local.add_log("Chown ton-work dir", "debug")
 	if platform == "darwin":
-		#args = ["chown", "-R", user + ':' + "staff", ton_work_dir]
-		local.add_log("skip", "debug")
+		args = ["chown", "-R", user + ':' + group, ton_work_dir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
@@ -358,6 +361,7 @@ def DownloadDump():
 def FirstMytoncoreSettings():
 	local.add_log("start FirstMytoncoreSettings function", "debug")
 	user = local.buffer.user
+	group = local.buffer.group
 	srcDir = local.buffer.src_dir
 
 	# Прописать mytoncore.py в автозагрузку
@@ -391,7 +395,7 @@ def FirstMytoncoreSettings():
 	elif platform == "darwin":
 		path1 = "/Users/{user}/.local/".format(user=user)
 		path2 = path1 + "share/"
-		chownOwner = user + ':' + "staff"
+		chownOwner = user + ':' + group
 		os.makedirs(path1, exist_ok=True)
 		os.makedirs(path2, exist_ok=True)
 		args = ["chown", "-R", chownOwner, path1, path2]
@@ -437,8 +441,7 @@ def FirstMytoncoreSettings():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", mconfigDir, mconfig_path]
-		local.add_log("skip2", "debug")
+		args = ["chown", user + ':' + group, mconfigDir, mconfig_path]
 	else:
 		args = ["chown", user + ':' + user, mconfigDir, mconfig_path]
 	subprocess.run(args)
@@ -452,6 +455,7 @@ def EnableValidatorConsole():
 
 	# Create variables
 	user = local.buffer.user
+	group = local.buffer.group
 	vuser = local.buffer.vuser
 	cport = local.buffer.cport
 	src_dir = local.buffer.src_dir
@@ -494,8 +498,7 @@ def EnableValidatorConsole():
 
 	# chown 1
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
-		local.add_log("skip3", "debug")
+		args = ["chown", user + ':' + group, newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 
@@ -503,8 +506,7 @@ def EnableValidatorConsole():
 
 	# chown 2
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", server_pubkey, client_key, client_pubkey]
-		local.add_log("skip4", "debug")
+		args = ["chown", user + ':' + group, server_pubkey, client_key, client_pubkey]
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
@@ -557,6 +559,7 @@ def EnableLiteServer():
 
 	# Create variables
 	user = local.buffer.user
+	group = local.buffer.group
 	vuser = local.buffer.vuser
 	lport = local.buffer.lport
 	src_dir = local.buffer.src_dir
@@ -592,8 +595,7 @@ def EnableLiteServer():
 	# chown 1
 	local.add_log("chown 1", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", newKeyPath]
-		local.add_log("skip5", "debug")
+		args = ["chown", user + ':' + group, newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
 	subprocess.run(args)
@@ -601,8 +603,7 @@ def EnableLiteServer():
 	# chown 2
 	local.add_log("chown 2", "debug")
 	if platform == "darwin":
-		args = ["chown", user + ':' + "staff", liteserver_pubkey]
-		local.add_log("skip6", "debug")
+		args = ["chown", user + ':' + group, liteserver_pubkey]
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
@@ -1010,6 +1011,8 @@ def CreateSymlinks():
 
 def EnableDhtServer():
 	local.add_log("start EnableDhtServer function", "debug")
+	user = local.buffer.user
+	group = local.buffer.group
 	vuser = local.buffer.vuser
 	ton_bin_dir = local.buffer.ton_bin_dir
 	globalConfigPath = local.buffer.global_config_path
@@ -1062,8 +1065,7 @@ def EnableDhtServer():
 
 	# chown 1
 	if platform == "darwin":
-		#args = ["chown", "-R", user + ':' + "staff", tonDhtServerDir]
-		local.add_log("skip7", "debug")
+		args = ["chown", "-R", user + ':' + group, tonDhtServerDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
