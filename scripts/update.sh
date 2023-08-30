@@ -11,8 +11,13 @@ fi
 author="ton-blockchain"
 repo="mytonctrl"
 branch="master"
-srcdir="/usr/src/"
-bindir="/usr/bin/"
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  srcdir="/usr/local/src/"
+  bindir="/usr/local/bin/"
+else
+  srcdir="/usr/src/"
+  bindir="/usr/bin/"
+fi
 
 # Get arguments
 while getopts a:r:b: flag
@@ -39,7 +44,11 @@ rm -rf ${srcdir}/${repo}
 echo "https://github.com/${author}/${repo}.git -> ${branch}"
 git clone --recursive https://github.com/${author}/${repo}.git
 cd ${repo} && git checkout ${branch} && git submodule update --init --recursive
-systemctl restart mytoncore
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  kickstart -k system/mytoncore
+else
+  systemctl restart mytoncore
+fi
 
 # Конец
 echo -e "${COLOR}[1/1]${ENDC} MyTonCtrl components update completed"

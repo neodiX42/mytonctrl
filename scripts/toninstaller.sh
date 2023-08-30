@@ -85,7 +85,7 @@ if [ "$OSTYPE" == "linux-gnu" ]; then
 	elif [ -f /etc/debian_version ]; then
 		echo "Ubuntu/Debian Linux detected."
 		apt-get update
-		apt-get install -y build-essential git cmake clang libgflags-dev zlib1g-dev libssl-dev libreadline-dev libmicrohttpd-dev pkg-config libgsl-dev python3 python3-dev python3-pip libsecp256k1-dev libsodium-dev ninja-build
+		apt-get install -y build-essential git cmake clang libgflags-dev zlib1g-dev libssl-dev libreadline-dev libmicrohttpd-dev pkg-config libgsl-dev python3 python3-dev python3-pip libsecp256k1-dev libsodium-dev ninja-build automake autogen autoconf libtool texinfo
 
 	else
 		echo "Unknown Linux distribution."
@@ -102,7 +102,7 @@ elif [[ "$OSTYPE" =~ darwin.* ]]; then
 	fi
 
 	su $SUDO_USER -c "brew update"
-	su $SUDO_USER -c "brew install openssl cmake llvm ninja"
+	su $SUDO_USER -c "brew install openssl cmake llvm ninja automake autogen autoconf libtool texinfo"
 	export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 
 elif [ "$OSTYPE" == "freebsd"* ]; then
