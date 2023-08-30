@@ -50,7 +50,7 @@ def Refresh():
 	user = local.buffer.user
 
 
-	if user == 'root' and not os.getenv("SUDO_USER")::
+	if user == 'root' and not os.getenv("SUDO_USER"):
 		if platform == "darwin":
 			local.buffer.mconfig_path = "/var/root/.local/share/mytoncore/mytoncore.db"
 		else:
