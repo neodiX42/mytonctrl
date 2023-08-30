@@ -29,8 +29,16 @@ def Init():
 		home = subprocess.getoutput("eval echo ~"+user)
 		print("2. user:group:home " + user + ":" + group + ":" + home)
 
-	os.system("echo \"" + home + "\" > " +mConfigSharedPath)
-	print("write path to file...")
+	if 'root' in home:
+		if platform == "darwin":
+			work_dir = home + "/.local/share/"
+		else:
+			work_dir = "/usr/local/bin/"
+	else:
+		work_dir = home + "/.local/share/"
+
+	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
+	print("work_dir: "+work_dir)
 
 	local = MyPyClass(__file__)
 
