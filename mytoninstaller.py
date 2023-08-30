@@ -27,13 +27,15 @@ def Init():
 		group = subprocess.getoutput("id -gn "+user)
 		home = subprocess.getoutput("eval echo ~"+user)
 
-	if 'root' in home:
-		if platform == "darwin":
-			work_dir = home + "/.local/share/"
-		else:
-			work_dir = "/usr/local/bin/"
-	else:
-		work_dir = home + "/.local/share/"
+# 	if 'root' in home:
+# 		if platform == "darwin":
+# 			work_dir = home + "/.local/share/"
+# 		else:
+# 			work_dir = "/usr/local/bin/"
+# 	else:
+# 		work_dir = home + "/.local/share/"
+
+	work_dir = home + "/.local/share/"
 
 	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
 
