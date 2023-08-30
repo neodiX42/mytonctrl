@@ -15,13 +15,11 @@ mConfigSharedPath = "/usr/local/bin/mtc-work-dir" if platform == "darwin" else "
 launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
+	global local
 	# create variables
 	user = os.environ.get("USER", "root")
 	group = subprocess.getoutput("id -gn "+user)
 	home = subprocess.getoutput("eval echo ~"+user)
-	local.buffer.user = user
-	local.buffer.group = group
-	local.buffer.home = home
 	print("1.user:group:home " + user + ":" + group + ":" + home)
 
 	if "-u" in sys.argv:
@@ -30,14 +28,15 @@ def Init():
 		group = subprocess.getoutput("id -gn "+user)
 		home = subprocess.getoutput("eval echo ~"+user)
 		print("2. user:group:home " + user + ":" + group + ":" + home)
-		local.buffer.user = user
-		local.buffer.group = group
-		local.buffer.home = home
 
 	os.system("echo \"" + home + "\" > " +mConfigSharedPath)
 	print("write path to file...")
 
-	global local = MyPyClass(__file__)
+	local = MyPyClass(__file__)
+
+	local.buffer.user = user
+	local.buffer.group = group
+	local.buffer.home = home
 
 	local.db.config.isStartOnlyOneProcess = False
 	local.db.config.logLevel = "debug"
