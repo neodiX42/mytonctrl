@@ -4062,6 +4062,8 @@ def GetSwapInfo():
 
 def GetValidatorProcessInfo():
 	pid = get_service_pid("validator")
+	if pid == None or pid == 0:
+		return
 	p = psutil.Process(pid)
 	mem = p.memory_info()
 	result = dict()
