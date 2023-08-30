@@ -50,7 +50,7 @@ def Refresh():
 	user = local.buffer.user
 
 
-	if user == 'root':
+	if user == 'root' and not os.getenv("SUDO_USER")::
 		if platform == "darwin":
 			local.buffer.mconfig_path = "/var/root/.local/share/mytoncore/mytoncore.db"
 		else:
@@ -381,7 +381,7 @@ def FirstMytoncoreSettings():
 	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
-	if user == 'root':
+	if user == 'root' and not os.getenv("SUDO_USER"):
 		if platform == "darwin":
 			path = "/var/root/.local/share/mytoncore/mytoncore.db"
 		else:
