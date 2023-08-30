@@ -20,14 +20,12 @@ def Init():
 	user = os.environ.get("USER", "root")
 	group = subprocess.getoutput("id -gn "+user)
 	home = subprocess.getoutput("eval echo ~"+user)
-	print("1.user:group:home " + user + ":" + group + ":" + home)
 
 	if "-u" in sys.argv:
 		ux = sys.argv.index("-u")
 		user = sys.argv[ux+1]
 		group = subprocess.getoutput("id -gn "+user)
 		home = subprocess.getoutput("eval echo ~"+user)
-		print("2. user:group:home " + user + ":" + group + ":" + home)
 
 	if 'root' in home:
 		if platform == "darwin":
@@ -38,7 +36,6 @@ def Init():
 		work_dir = home + "/.local/share/"
 
 	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
-	print("work_dir: "+work_dir)
 
 	local = MyPyClass(__file__)
 
@@ -520,7 +517,7 @@ def EnableValidatorConsole():
 	if platform == "darwin":
 		args = ["chown", user + ':' + group, server_pubkey, client_key, client_pubkey]
 	else:
-		args = ["chown", vuser + ':' + vuser, server_pubkey, client_key, client_pubkey]
+		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
@@ -617,7 +614,7 @@ def EnableLiteServer():
 	if platform == "darwin":
 		args = ["chown", user + ':' + group, liteserver_pubkey]
 	else:
-		args = ["chown", vuser + ':' + vuser, liteserver_pubkey]
+		args = ["chown", user + ':' + user, liteserver_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
