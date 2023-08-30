@@ -346,10 +346,8 @@ def FirstNodeSettings():
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
 
-	args = ["chown", "-R", user + ':' + group, local.buffer.bin_dir]
-	subprocess.run(args)
-	args = ["chown", "-R", user + ':' + group, local.buffer.src_dir]
-	subprocess.run(args)
+	subprocess.run(["chown", "-R", user + ':' + group, local.buffer.bin_dir])
+	subprocess.run(["chown", "-R", user + ':' + group, local.buffer.src_dir])
 
 	# start validator
 	StartValidator()
@@ -525,7 +523,7 @@ def EnableValidatorConsole():
 	if platform == "darwin":
 		args = ["chown", user + ':' + group, server_pubkey, client_key, client_pubkey]
 	else:
-		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
+		args = ["chown", vuser + ':' + vuser, server_pubkey, client_key, client_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
@@ -622,7 +620,7 @@ def EnableLiteServer():
 	if platform == "darwin":
 		args = ["chown", user + ':' + group, liteserver_pubkey]
 	else:
-		args = ["chown", user + ':' + user, liteserver_pubkey]
+		args = ["chown", vuser + ':' + vuser, liteserver_pubkey]
 	subprocess.run(args)
 
 	# read vconfig
