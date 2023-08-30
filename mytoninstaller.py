@@ -346,9 +346,6 @@ def FirstNodeSettings():
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
 
-	subprocess.run(["chown", "-R", user + ':' + group, local.buffer.bin_dir])
-	subprocess.run(["chown", "-R", user + ':' + group, local.buffer.src_dir])
-
 	# start validator
 	StartValidator()
 #end define
