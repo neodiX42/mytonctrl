@@ -9,20 +9,12 @@ from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
 from sys import platform
 
-local = MyPyClass(__file__)
 console = MyPyConsole()
 defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if platform == "darwin" else "/usr/bin/ton/local.config.json"
 mConfigSharedPath = "/usr/local/bin/mtc-work-dir" if platform == "darwin" else "/usr/bin/mtc-work-dir"
 launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
-	local.db.config.isStartOnlyOneProcess = False
-	local.db.config.logLevel = "debug"
-	local.db.config.isIgnorLogWarning = True # disable warning
-	local.run()
-	local.db.config.isIgnorLogWarning = False # enable warning
-
-
 	# create variables
 	user = os.environ.get("USER", "root")
 	group = subprocess.getoutput("id -gn "+user)
@@ -31,6 +23,27 @@ def Init():
 	local.buffer.group = group
 	local.buffer.home = home
 	print("1.user:group:home " + user + ":" + group + ":" + home)
+
+	if "-u" in sys.argv:
+		ux = sys.argv.index("-u")
+		user = sys.argv[ux+1]
+		group = subprocess.getoutput("id -gn "+user)
+		home = subprocess.getoutput("eval echo ~"+user)
+		print("2. user:group:home " + user + ":" + group + ":" + home)
+		local.buffer.user = user
+		local.buffer.group = group
+		local.buffer.home = home
+
+	os.system("echo \"" + home + "\" > " +mConfigSharedPath)
+	print("write path to file...")
+
+	global local = MyPyClass(__file__)
+
+	local.db.config.isStartOnlyOneProcess = False
+	local.db.config.logLevel = "debug"
+	local.db.config.isIgnorLogWarning = True # disable warning
+	local.run()
+	local.db.config.isIgnorLogWarning = False # enable warning
 
 	local.buffer.vuser = "validator"
 	local.buffer.cport = random.randint(2000, 65000)
@@ -54,8 +67,6 @@ def Refresh():
 	user = local.buffer.user
 	home = local.buffer.home
 	local.buffer.mconfig_path = home +"/.local/share/mytoncore/mytoncore.db".format(user=user)
-	os.system("echo \"" + home + "\" > " +mConfigSharedPath)
-	print("write path to file...")
 	#end if
 
 	# create variables
@@ -210,17 +221,6 @@ def Event(name):
 #end define
 
 def General():
-	if "-u" in sys.argv:
-		ux = sys.argv.index("-u")
-		user = sys.argv[ux+1]
-		group = subprocess.getoutput("id -gn "+user)
-		home = subprocess.getoutput("eval echo ~"+user)
-		print("2. user:group:home " + user + ":" + group + ":" + home)
-		local.buffer.user = user
-		local.buffer.group = group
-		local.buffer.home = home
-		print("2. user:group " + user + ":" + group + ":" + home)
-		Refresh()
 	if "-e" in sys.argv:
 		ex = sys.argv.index("-e")
 		name = sys.argv[ex+1]
@@ -371,6 +371,7 @@ def FirstMytoncoreSettings():
 	local.add_log("start FirstMytoncoreSettings function", "debug")
 	user = local.buffer.user
 	group = local.buffer.group
+	home = local.buffer.home
 	srcDir = local.buffer.src_dir
 
 	# Прописать mytoncore.py в автозагрузку
@@ -380,16 +381,7 @@ def FirstMytoncoreSettings():
 	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
-	if user == 'root' and not os.getenv("SUDO_USER"):
-		if platform == "darwin":
-			path = "/var/root/.local/share/mytoncore/mytoncore.db"
-		else:
-			path = "/usr/local/bin/mytoncore/mytoncore.db"
-	else:
-		if platform == "darwin":
-			path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
-		else:
-			path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	path = home + "/.local/share/mytoncore/mytoncore.db"
 
 	if os.path.isfile(path) :
 		local.add_log("mytoncore.db already exist. Break FirstMytoncoreSettings function", "warning")
