@@ -12,6 +12,7 @@ from sys import platform
 local = MyPyClass(__file__)
 console = MyPyConsole()
 defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if platform == "darwin" else "/usr/bin/ton/local.config.json"
+mConfigSharedPath = "/usr/local/bin/mtc-work-dir" if platform == "darwin" else "/usr/bin/mtc-work-dir"
 launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
@@ -25,9 +26,12 @@ def Init():
 	# create variables
 	user = os.environ.get("USER", "root")
 	group = subprocess.getoutput("id -gn "+user)
+	home = subprocess.getoutput("eval echo ~"+user)
 	local.buffer.user = user
 	local.buffer.group = group
-	print("1. user:group " + user + ":" + group)
+	local.buffer.home = home
+	print("1.user:group:home " + user + ":" + group + ":" + home)
+
 	local.buffer.vuser = "validator"
 	local.buffer.cport = random.randint(2000, 65000)
 	local.buffer.lport = random.randint(2000, 65000)
@@ -48,18 +52,10 @@ def Init():
 
 def Refresh():
 	user = local.buffer.user
-
-
-	if user == 'root' and not os.getenv("SUDO_USER"):
-		if platform == "darwin":
-			local.buffer.mconfig_path = "/var/root/.local/share/mytoncore/mytoncore.db"
-		else:
-			local.buffer.mconfig_path = "/usr/local/bin/mytoncore/mytoncore.db"
-	else:
-		if platform == "darwin":
-			local.buffer.mconfig_path = "/Users/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
-		else:
-			local.buffer.mconfig_path = "/home/{user}/.local/share/mytoncore/mytoncore.db".format(user=user)
+	home = local.buffer.home
+	local.buffer.mconfig_path = home +"/.local/share/mytoncore/mytoncore.db".format(user=user)
+	os.system("echo \"" + home + "\" > " +mConfigSharedPath)
+	print("write path to file...")
 	#end if
 
 	# create variables
@@ -218,9 +214,12 @@ def General():
 		ux = sys.argv.index("-u")
 		user = sys.argv[ux+1]
 		group = subprocess.getoutput("id -gn "+user)
+		home = subprocess.getoutput("eval echo ~"+user)
+		print("2. user:group:home " + user + ":" + group + ":" + home)
 		local.buffer.user = user
 		local.buffer.group = group
-		print("2. user:group " + user + ":" + group)
+		local.buffer.home = home
+		print("2. user:group " + user + ":" + group + ":" + home)
 		Refresh()
 	if "-e" in sys.argv:
 		ex = sys.argv.index("-e")
