@@ -11,6 +11,7 @@ local = MyPyClass(__file__)
 console = MyPyConsole()
 ton = MyTonCore()
 
+binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
 srcDir = "/usr/local/src/" if platform == "darwin" else "/usr/src/"
 tonSrcDir = "/usr/local/src/ton/" if platform == "darwin" else "/usr/src/ton/"
 
@@ -204,7 +205,6 @@ def Update(args):
 #end define
 
 def Upgrade(args):
-	binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
 	repo = "ton"
 	author, repo, branch = check_git(args, repo, "upgrade")
 

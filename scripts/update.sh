@@ -44,6 +44,13 @@ rm -rf ${srcdir}/${repo}
 echo "https://github.com/${author}/${repo}.git -> ${branch}"
 git clone --recursive https://github.com/${author}/${repo}.git
 cd ${repo} && git checkout ${branch} && git submodule update --init --recursive
+
+if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
+  # migrate old locations
+  # todo
+  echo Migrating old...
+fi
+#migrate to ~/.local/share
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   kickstart -k system/mytoncore
 else

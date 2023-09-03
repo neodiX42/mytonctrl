@@ -27,18 +27,11 @@ def Init():
 		group = subprocess.getoutput("id -gn "+user)
 		home = subprocess.getoutput("eval echo ~"+user)
 
-# 	if 'root' in home:
-# 		if platform == "darwin":
-# 			work_dir = home + "/.local/share/"
-# 		else:
-# 			work_dir = "/usr/local/bin/"
-# 	else:
-# 		work_dir = home + "/.local/share/"
-
 	work_dir = home + "/.local/share/"
 
+    #persist my-work-dir in user independent directory
 	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
-
+    #lazy load
 	local = MyPyClass(__file__)
 
 	local.buffer.user = user
