@@ -33,17 +33,24 @@ done
 COLOR='\033[92m'
 ENDC='\033[0m'
 
-# Установка компонентов python3
-pip3 install fastcrc
+if [ ! -f "${srcdir}/updated" ]; then
+  # Установка компонентов python3
+  pip3 install fastcrc
 
-# Go to work dir
-cd ${srcdir}
-rm -rf ${srcdir}/${repo}
+  # Go to work dir
+  cd ${srcdir}
+  rm -rf ${srcdir}/${repo}
 
-# Update code
-echo "https://github.com/${author}/${repo}.git -> ${branch}"
-git clone --recursive https://github.com/${author}/${repo}.git
-cd ${repo} && git checkout ${branch} && git submodule update --init --recursive
+  # Update code
+  echo "https://github.com/${author}/${repo}.git -> ${branch}"
+  git clone --recursive https://github.com/${author}/${repo}.git
+  cd ${repo} && git checkout ${branch} && git submodule update --init --recursive
+  touch ${srcdir}/updated
+  #restart current script
+  $(basename $0) && exit
+else
+  rm ${srcdir}/updated
+fi
 
 # migrate old locations for root user
 if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
@@ -55,15 +62,18 @@ if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
   fi
   cd ~root/.local/share/mytoncore/wallets/
   for fn in *; do mv $fn $fn.backup; done
-  for fn in /usr/local/bin/mytoncore/wallets/*; do cp $fn $(basename $fn); done
-
+  if [ ! -d "/usr/local/bin/mytoncore/wallets" ]; then
+    for fn in /usr/local/bin/mytoncore/wallets/*; do cp $fn $(basename $fn); done
+  fi
   #pools
   if [ ! -d "~root/.local/share/mytoncore/pools/" ]; then
     mkdir -p ~root/.local/share/mytoncore/pools
   fi
-  cd ~root/.local/share/mytoncore/pool/
+  cd ~root/.local/share/mytoncore/pools/
   for fn in *; do mv $fn $fn.backup; done
-  for fn in /usr/local/bin/mytoncore/pool/*; do cp $fn $(basename $fn); done
+  if [ ! -d "/usr/local/bin/mytoncore/pools" ]; then
+    for fn in /usr/local/bin/mytoncore/pools/*; do cp $fn $(basename $fn); done
+  fi
 
   #contracts
   if [ ! -d "~root/.local/share/mytoncore/contracts/" ]; then
@@ -71,7 +81,9 @@ if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
   fi
   cd ~root/.local/share/mytoncore/contracts/
   for fn in *; do mv $fn $fn.backup; done
-  for fn in /usr/local/bin/mytoncore/contracts/*; do cp -R $fn $(basename $fn); done
+  if [ ! -d "/usr/local/bin/mytoncore/contracts" ]; then
+    for fn in /usr/local/bin/mytoncore/contracts/*; do cp -R $fn $(basename $fn); done
+  fi
 fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
