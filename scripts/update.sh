@@ -44,7 +44,7 @@ migrate() {
   fi
   if [ -d "/usr/local/bin/mytoncore/$folder" ]; then
     if [ $(find /usr/local/bin/mytoncore/$folder -type f | wc -l) -ne 0 ] ; then
-      for fn in /usr/local/bin/mytoncore/$folder/*; do cp $fn $(basename $fn); done
+      for fn in /usr/local/bin/mytoncore/$folder/*; do cp -R $fn $(basename $fn); done
     fi
   fi
 }
