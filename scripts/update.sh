@@ -48,7 +48,7 @@ if [ ! -f "${srcdir}/updated" ]; then
   chmod +x ${srcdir}/mytonctrl/scripts/update.sh
   touch ${srcdir}/updated
   #restart current script
-  $($0) && exit
+  ./$0 && exit
 else
   rm ${srcdir}/updated
 fi
