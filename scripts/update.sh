@@ -45,9 +45,10 @@ if [ ! -f "${srcdir}/updated" ]; then
   echo "https://github.com/${author}/${repo}.git -> ${branch}"
   git clone --recursive https://github.com/${author}/${repo}.git
   cd ${repo} && git checkout ${branch} && git submodule update --init --recursive
+  chmod +x ${srcdir}/mytonctrl/scripts/update.sh
   touch ${srcdir}/updated
   #restart current script
-  $(basename $0) && exit
+  $($0) && exit
 else
   rm ${srcdir}/updated
 fi
