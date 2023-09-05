@@ -47,6 +47,7 @@ migrate() {
       for fn in /usr/local/bin/mytoncore/$folder/*; do cp -R $fn $(basename $fn); done
     fi
   fi
+  return 0
 }
 
 if [ ! -f "${srcdir}/updated" ]; then
@@ -71,10 +72,13 @@ fi
 
 # migrate old locations for root user
 if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
-  echo "Migrating /usr/local/bin/ to $(echo ~root/.local/share/)"
-  migrate "wallets"
+  echo -e "${COLOR}Migrating /usr/local/bin/ to $(echo ~root/.local/share/)${ENDC}"
   migrate "pools"
   migrate "contracts"
+  if migrate "wallets"; then
+    echo -e "${COLOR}Migration successful. Old data stored under /usr/local/bin/mytoncore.backup${ENDC}"
+    mv /usr/local/bin/mytoncore /usr/local/bin/mytoncore.backup
+  fi
 fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
