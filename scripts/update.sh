@@ -33,6 +33,22 @@ done
 COLOR='\033[92m'
 ENDC='\033[0m'
 
+migrate() {
+  folder=$1
+  if [ ! -d "~root/.local/share/mytoncore/$folder/" ]; then
+    mkdir -p ~root/.local/share/mytoncore/$folder
+  fi
+  cd ~root/.local/share/mytoncore/$folder/
+  if [ $(find . -type f | grep -v .backup | wc -l) -ne 0 ] ; then
+      for fn in $(find . -type f | grep -v .backup); do mv $fn $fn.backup; done
+  fi
+  if [ -d "/usr/local/bin/mytoncore/$folder" ]; then
+    if [ $(find /usr/local/bin/mytoncore/$folder -type f | wc -l) -ne 0 ] ; then
+      for fn in /usr/local/bin/mytoncore/$folder/*; do cp $fn $(basename $fn); done
+    fi
+  fi
+}
+
 if [ ! -f "${srcdir}/updated" ]; then
   # Установка компонентов python3
   pip3 install fastcrc
@@ -56,35 +72,9 @@ fi
 # migrate old locations for root user
 if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
   echo "Migrating /usr/local/bin/ to $(echo ~root/.local/share/)"
-
-  #wallets
-  if [ ! -d "~root/.local/share/mytoncore/wallets/" ]; then
-    mkdir -p ~root/.local/share/mytoncore/wallets
-  fi
-  cd ~root/.local/share/mytoncore/wallets/
-  for fn in *; do mv $fn $fn.backup; done
-  if [ ! -d "/usr/local/bin/mytoncore/wallets" ]; then
-    for fn in /usr/local/bin/mytoncore/wallets/*; do cp $fn $(basename $fn); done
-  fi
-  #pools
-  if [ ! -d "~root/.local/share/mytoncore/pools/" ]; then
-    mkdir -p ~root/.local/share/mytoncore/pools
-  fi
-  cd ~root/.local/share/mytoncore/pools/
-  for fn in *; do mv $fn $fn.backup; done
-  if [ ! -d "/usr/local/bin/mytoncore/pools" ]; then
-    for fn in /usr/local/bin/mytoncore/pools/*; do cp $fn $(basename $fn); done
-  fi
-
-  #contracts
-  if [ ! -d "~root/.local/share/mytoncore/contracts/" ]; then
-    mkdir -p ~root/.local/share/mytoncore/contracts
-  fi
-  cd ~root/.local/share/mytoncore/contracts/
-  for fn in *; do mv $fn $fn.backup; done
-  if [ ! -d "/usr/local/bin/mytoncore/contracts" ]; then
-    for fn in /usr/local/bin/mytoncore/contracts/*; do cp -R $fn $(basename $fn); done
-  fi
+  migrate "wallets"
+  migrate "pools"
+  migrate "contracts"
 fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
