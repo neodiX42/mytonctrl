@@ -38,7 +38,7 @@ if [ ! -f "${srcdir}/updated" ]; then
   pip3 install fastcrc
 
   # Go to work dir
-  cd ${srcdir}/${repo}
+  cd ${srcdir}
   rm -rf ${srcdir}/${repo}
 
   # Update code
