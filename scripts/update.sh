@@ -38,7 +38,7 @@ if [ ! -f "${srcdir}/updated" ]; then
   pip3 install fastcrc
 
   # Go to work dir
-  cd ${srcdir}
+  cd ${srcdir}/${repo}
   rm -rf ${srcdir}/${repo}
 
   # Update code
@@ -48,7 +48,7 @@ if [ ! -f "${srcdir}/updated" ]; then
   chmod +x ${srcdir}/mytonctrl/scripts/update.sh
   touch ${srcdir}/updated
   #restart current script
-  ./$0 && exit
+  ${srcdir}/mytonctrl/scripts/update.sh && exit
 else
   rm ${srcdir}/updated
 fi
