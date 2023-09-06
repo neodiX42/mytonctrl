@@ -30,6 +30,7 @@ def Init():
 	work_dir = home + "/.local/share/"
 
     #persist my-work-dir in user independent directory
+	os.makedirs("/tmp/mytoncore", exist_ok=True)
 	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
     #lazy load
 	local = MyPyClass(__file__)
