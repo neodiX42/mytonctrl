@@ -11,7 +11,7 @@ from sys import platform
 
 console = MyPyConsole()
 defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if platform == "darwin" else "/usr/bin/ton/local.config.json"
-mConfigSharedPath = "/usr/local/bin/mtc-work-dir" if platform == "darwin" else "/usr/bin/mtc-work-dir"
+mConfigSharedPath = "/tmp/mytoncore/mtc-work-dir"
 launcher = "launchctl" if platform == "darwin" else "systemctl"
 
 def Init():
