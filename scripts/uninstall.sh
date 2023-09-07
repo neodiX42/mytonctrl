@@ -44,7 +44,9 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   rm -rf /usr/local/bin/mytoncore/mytoncore.db
   rm -rf /Users/$USER/.local/share/mytonctrl
   rm -rf /Users/$USER/.local/share/mytoncore/mytoncore.db
-  rm -rf /usr/local/bin/mtc-work-dir
+  rm -rf /var/root/.local/share/mytonctrl
+  rm -rf /var/root/.local/share/mytoncore/mytoncore.db
+
 
   # Удаление ссылок
   rm -rf /usr/bin/fift
@@ -78,7 +80,8 @@ else
   rm -rf /usr/local/bin/mytoncore/mytoncore.db
   rm -rf /home/${user}/.local/share/mytonctrl
   rm -rf /home/${user}/.local/share/mytoncore/mytoncore.db
-  rm -rf /usr/bin/mtc-work-dir
+  rm -rf /root/.local/share/mytonctrl
+  rm -rf /root/.local/share/mytoncore/mytoncore.db
 
   # Удаление ссылок
   rm -rf /usr/bin/fift

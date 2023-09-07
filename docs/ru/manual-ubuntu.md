@@ -62,6 +62,6 @@
 
 ![help command](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytonctrl-help_ru.png)
 
-Для проверки логов **mytoncrl** откройте `~/.local/share/mytoncore/mytoncore.log` для локального пользователя или `/usr/local/bin/mytoncore/mytoncore.log` для Root.
+Для проверки логов **mytoncrl** откройте `~/.local/share/mytoncore/mytoncore.log` для локального пользователя или `/root/.local/share/mytoncore/mytoncore.log` для Root.
 
 ![logs](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytoncore-log.png)

@@ -31,8 +31,15 @@ MyTonCtrl creates a working directory for the validator here:
 
 The configurations will be stored differently:
 
-1. `/usr/local/bin/mytonctrl/`
-2. `/usr/local/bin/mytoncore/`
+For Linux
+
+1. `/root/.local/share/mytonctrl/`
+2. `/root/.local/share/mytoncore/`
+
+For macOS
+
+1. `/var/root/.local/share/mytonctrl/`
+2. `/var/root/.local/share/mytoncore/`
 
 ---
 
@@ -80,9 +87,18 @@ If you want to change the working directory of the validator from `/var/ton/` af
 
 1. **Stop services** - You will need to stop the services with these commands:
 
+    For Linux
+   
     ```bash
     systemctl stop validator
     systemctl stop mytoncore
+    ```
+   
+    For macOS
+   
+    ```bash
+    sudo launchctl unload /Library/LaunchDaemons/validator.plist
+    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
     ```
 
 2. **Move validator files** - You then need to move the validator files with this command:
@@ -117,8 +133,16 @@ To view the performance factor of your validator, you can use the `vl` command i
 
 If you need to restart your validator, you can do so by running the following command:
 
-```bash
-systemctl restart validator
-```
+   For Linux
+   
+   ```bash
+   systemctl restart validator
+   ```
+   
+   For macOS
+
+   ```bash
+   sudo launchctl kickstart -k system/validator
+   ```
 
 Ensure you have sufficient permissions to execute these commands and make necessary adjustments. Always remember to back up important data before performing operations that could potentially affect your validator.

@@ -62,6 +62,6 @@
 
 ![help command](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytonctrl-help_ru.png)
 
-要檢查 **mytoncrl** 日誌，對於本地用戶，打開 `~/.local/share/mytoncore/mytoncore.log`，對於 Root，打開 `/usr/local/bin/mytoncore/mytoncore.log`。
+要檢查 **mytoncrl** 日誌，對於本地用戶，打開 `~/.local/share/mytoncore/mytoncore.log`，對於 Root，打開 `/root/.local/share/mytoncore/mytoncore.log`。
 
 ![logs](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytoncore-log.png)

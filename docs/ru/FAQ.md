@@ -29,8 +29,15 @@ MyTonCtrl создает рабочую директорию для валида
 
 Конфигурации будут храниться иначе:
 
-1. `/usr/local/bin/mytonctrl/`
-2. `/usr/local/bin/mytoncore/`
+Для Linux
+
+1. `/root/.local/share/mytonctrl/`
+2. `/root/.local/share/mytoncore/`
+
+Для macOS
+
+1. `/var/root/.local/share/mytonctrl/`
+2. `/var/root/.local/share/mytoncore/`
 
 ---
 
@@ -78,16 +85,25 @@ Error: expected str, bytes or os.PathLike object, not NoneType
 
 1. **Остановите службы** - Вам потребуется остановить службы с помощью этих команд:
 
+    Для Linux
+   
     ```bash
     systemctl stop validator
     systemctl stop mytoncore
     ```
+   
+    Для macOS
+   
+    ```bash
+    sudo launchctl unload /Library/LaunchDaemons/validator.plist
+    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
+    ```
 
 2. **Переместите файлы валидатора** - Затем вам нужно переместить файлы валидатора с помощью этой команды:
 
-    ```bash
-    mv /var/ton/* /opt/ton/
-    ```
+ ```bash
+ mv /var/ton/* /opt/ton/
+ ```
 
 3. **Обновите пути в конфигурации** - Замените пути в конфигурации, расположенной в `~/.local/share/mytoncore/mytoncore.db`.
 
@@ -115,8 +131,16 @@ Error: expected str, bytes or os.PathLike object, not NoneType
 
 Если вам нужно перезапустить ваш валидатор, вы можете сделать это, выполнив следующую команду:
 
-```bash
-systemctl restart validator
-```
+   Для Linux
+   
+   ```bash
+   systemctl restart validator
+   ```
+   
+   Для macOS
+
+   ```bash
+   sudo launchctl kickstart -k system/validator
+   ```
 
 Убедитесь, что у вас есть достаточные права для выполнения этих команд и сделайте необходимые корректировки. Всегда помните о резервном копировании важных данных перед выполнением операций, которые могут потенциально повлиять на ваш валидатор.

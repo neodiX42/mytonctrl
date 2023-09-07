@@ -62,6 +62,6 @@ You can also command for help anytime.
 
 ![help command](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytonctrl-help_ru.png)
 
-To check **mytoncrl** logs, open `~/.local/share/mytoncore/mytoncore.log` for a local user or `/usr/local/bin/mytoncore/mytoncore.log` for Root.
+To check **mytoncrl** logs, open `~/.local/share/mytoncore/mytoncore.log` for a local user or `/root/.local/share/mytoncore/mytoncore.log` for Root.
 
 ![logs](https://raw.githubusercontent.com/ton-blockchain/mytonctrl/master/screens/manual-ubuntu_mytoncore-log.png)

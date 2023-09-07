@@ -77,9 +77,18 @@ Error: expected str, bytes or os.PathLike object, not NoneType
 
 1. **停止服務** - 使用以下指令停止相關服務：
 
+   Linux
+   
     ```bash
     systemctl stop validator
     systemctl stop mytoncore
+    ```
+
+   macOS
+   
+    ```bash
+    sudo launchctl unload /Library/LaunchDaemons/validator.plist
+    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
     ```
 
 2. **移動驗證者的檔案** - 接著使用以下指令將驗證者的檔案移至新的目錄：
@@ -114,8 +123,15 @@ Error: expected str, bytes or os.PathLike object, not NoneType
 
 如果你需要重啟你的驗證者，可以執行以下命令：
 
-```bash
-systemctl restart validator
-```
+   Linux
+   
+   ```bash
+   systemctl restart validator
+   ```
+   
+   macOS
+   ```bash
+   sudo launchctl kickstart -k system/validator
+   ```
 
 請確保你具有執行這些命令的適當權限，並進行必要的調整。在執行可能影響你的驗證者的操作之前，請始終記得備份重要數據。

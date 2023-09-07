@@ -7,11 +7,6 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-if [[ "$OSTYPE" =~ darwin.* ]]; then
-  echo "Upgrade is not supported on this platform"
-  exit 1
-fi
-
 # Set default arguments
 author="ton-blockchain"
 repo="ton"
@@ -48,10 +43,10 @@ if [ -f "/var/ton-work/keys/liteserver.pub" ]; then
 else
 	echo "bugfix"
 	mkdir /var/ton-work/keys
-    cp /usr/bin/ton/validator-engine-console/client /var/ton-work/keys/client
-    cp /usr/bin/ton/validator-engine-console/client.pub /var/ton-work/keys/client.pub
-    cp /usr/bin/ton/validator-engine-console/server.pub /var/ton-work/keys/server.pub
-    cp /usr/bin/ton/validator-engine-console/liteserver.pub /var/ton-work/keys/liteserver.pub
+    cp ${bindir}/ton/validator-engine-console/client /var/ton-work/keys/client
+    cp ${bindir}/ton/validator-engine-console/client.pub /var/ton-work/keys/client.pub
+    cp ${bindir}/ton/validator-engine-console/server.pub /var/ton-work/keys/server.pub
+    cp ${bindir}/ton/validator-engine-console/liteserver.pub /var/ton-work/keys/liteserver.pub
 fi
 
 # Go to work dir
