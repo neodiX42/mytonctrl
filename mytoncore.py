@@ -3781,15 +3781,12 @@ def Statistics():
 #end define
 
 def ReadDiskData():
-	local.add_log("ReadDiskData", "debug")
 	timestamp = get_timestamp()
 	disks = GetDisksList()
 	buff = psutil.disk_io_counters(perdisk=True)
-	print(buff)
 	data = dict()
 	for name in disks:
 		try:
-			local.add_log("reading device " + name, "debug")
 			data[name] = dict()
 			data[name]["timestamp"] = timestamp
 			data[name]["busyTime"] = 0 if platform == "darwin" else buff[name].busy_time
@@ -3800,7 +3797,6 @@ def ReadDiskData():
 		except: pass
 	#end for
 
-	print(data)
 	local.buffer.diskio.pop(0)
 	local.buffer.diskio.append(data)
 #end define
@@ -3824,18 +3820,15 @@ def SaveDiskStatistics():
 	disks = GetDisksList()
 	for name in disks:
 		try:
-			local.add_log(f"saving device data {name}, {zerodata} {buff1} {buff5} {buff15}" , "debug")
 			if zerodata[name]["busyTime"] == 0:
 				continue
 			diskLoad1, diskLoadPercent1, iops1 = CalculateDiskStatistics(zerodata, buff1, name)
 			diskLoad5, diskLoadPercent5, iops5 = CalculateDiskStatistics(zerodata, buff5, name)
 			diskLoad15, diskLoadPercent15, iops15 = CalculateDiskStatistics(zerodata, buff15, name)
-			local.add_log(f"disk load {name}, {diskLoad1} {diskLoad5} {diskLoad15}" , "debug")
 			disksLoadAvg[name] = [diskLoad1, diskLoad5, diskLoad15]
 			disksLoadPercentAvg[name] = [diskLoadPercent1, diskLoadPercent5, diskLoadPercent15]
 			iopsAvg[name] = [iops1, iops5, iops15]
-		except Exception as e:
-			local.add_log("Error getting device " + name + "data: " + repr(e), ERROR)
+		except: pass
 	#end fore
 
 	# save statistics
