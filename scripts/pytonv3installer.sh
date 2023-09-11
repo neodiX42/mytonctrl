@@ -39,9 +39,15 @@ cd /usr/bin/ton && make tonlibjson
 
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
-cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='/usr/src/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig /usr/bin/ton/local.config.json --libtonlibjson /usr/bin/ton/tonlib/libtonlibjson.so')"
-python3 -c "${cmd}"
-systemctl restart pytonv3
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdPytonv3(name='pytonv3', user='${user}', workdir='/usr/src/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig /usr/bin/ton/local.config.json --libtonlibjson /usr/bin/ton/tonlib/libtonlibjson.so')"
+  python3 -c "${cmd}"
+  launchctl kickstart -k system/ pytonv3
+else
+  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='/usr/src/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig /usr/bin/ton/local.config.json --libtonlibjson /usr/bin/ton/tonlib/libtonlibjson.so')"
+  python3 -c "${cmd}"
+  systemctl restart pytonv3
+fi
 
 # Конец
 echo -e "${COLOR}[4/4]${ENDC} pyTONv3 installation complete"

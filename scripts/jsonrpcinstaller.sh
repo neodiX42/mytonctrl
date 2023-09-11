@@ -31,9 +31,15 @@ git clone --recursive https://github.com/igroman787/mtc-jsonrpc.git
 
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
-cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 /usr/src/mtc-jsonrpc/mtc-jsonrpc.py')"
-python3 -c "${cmd}"
-systemctl restart mtc-jsonrpc
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 /usr/src/mtc-jsonrpc/mtc-jsonrpc.py')"
+  python3 -c "${cmd}"
+  launchctl kickstart -k system/mtc-jsonrpc
+else
+  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 /usr/src/mtc-jsonrpc/mtc-jsonrpc.py')"
+  python3 -c "${cmd}"
+  systemctl restart mtc-jsonrpc
+fi
 
 # Выход из программы
 echo -e "${COLOR}[4/4]${ENDC} JsonRPC installation complete"
