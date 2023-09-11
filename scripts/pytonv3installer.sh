@@ -47,11 +47,11 @@ cd ${BIN_DIR}/ton && make tonlibjson
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdPytonv3(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='${BIN_DIR}/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdPytonv3(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
   python3 -c "${cmd}"
   launchctl kickstart -k system/ pytonv3
 else
-  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='${BIN_DIR}/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
   python3 -c "${cmd}"
   systemctl restart pytonv3
 fi

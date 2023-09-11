@@ -28,7 +28,7 @@ fi
 
 # Установка компонентов python3
 echo -e "${COLOR}[1/4]${ENDC} Installing required packages"
-pip3 install Werkzeug json-rpc cloudscraper pyotp
+pip3 install Werkzeug json-rpc cloudscraper pyotp jsonpickle
 
 # Клонирование репозиториев с github.com
 echo -e "${COLOR}[2/4]${ENDC} Cloning github repository"
@@ -39,11 +39,11 @@ git clone --recursive https://github.com/igroman787/mtc-jsonrpc.git
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='${BIN_DIR}/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin//python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
   launchctl kickstart -k system/mtc-jsonrpc
 else
-  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='mtc-jsonrpc', user='${user}', start='${BIN_DIR}/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
   systemctl restart mtc-jsonrpc
 fi
