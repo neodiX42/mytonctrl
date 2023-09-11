@@ -19,32 +19,39 @@ done
 COLOR='\033[92m'
 ENDC='\033[0m'
 
+SOURCES_DIR=/usr/src
+BIN_DIR=/usr/bin
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+	SOURCES_DIR=/usr/local/src
+	BIN_DIR=/usr/local/bin
+fi
+
 # Установка компонентов python3
 echo -e "${COLOR}[1/4]${ENDC} Installing required packages"
 pip3 install pipenv==2022.3.28
 
 # Клонирование репозиториев с github.com
 echo -e "${COLOR}[2/4]${ENDC} Cloning github repository"
-cd /usr/src
+cd ${SOURCES_DIR}
 rm -rf pytonv3
 #git clone https://github.com/EmelyanenkoK/pytonv3
 git clone https://github.com/igroman787/pytonv3
 
 # Установка модуля
-cd /usr/src/pytonv3
+cd ${SOURCES_DIR}/pytonv3
 python3 setup.py install
 
 # Скомпилировать недостающий бинарник
-cd /usr/bin/ton && make tonlibjson
+cd ${BIN_DIR}/ton && make tonlibjson
 
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdPytonv3(name='pytonv3', user='${user}', workdir='/usr/src/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig /usr/bin/ton/local.config.json --libtonlibjson /usr/bin/ton/tonlib/libtonlibjson.so')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdPytonv3(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='${BIN_DIR}/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
   python3 -c "${cmd}"
   launchctl kickstart -k system/ pytonv3
 else
-  cmd="from sys import path; path.append('/usr/src/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='/usr/src/pytonv3', start='/usr/bin/python3 -m pyTON --liteserverconfig /usr/bin/ton/local.config.json --libtonlibjson /usr/bin/ton/tonlib/libtonlibjson.so')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='pytonv3', user='${user}', workdir='${SOURCES_DIR}/pytonv3', start='${BIN_DIR}/python3 -m pyTON --liteserverconfig ${BIN_DIR}/ton/local.config.json --libtonlibjson ${BIN_DIR}/ton/tonlib/libtonlibjson.so')"
   python3 -c "${cmd}"
   systemctl restart pytonv3
 fi
