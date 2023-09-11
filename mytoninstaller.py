@@ -29,10 +29,11 @@ def Init():
 
 	work_dir = home + "/.local/share/"
 
-    #persist my-work-dir in user independent directory
+	# persist my-work-dir in user independent directory
 	os.makedirs("/tmp/mytoncore", exist_ok=True)
-	os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
-    #lazy load
+	if not os.path.isfile(mConfigSharedPath):
+		os.system("echo \"" + work_dir + "\" > " +mConfigSharedPath)
+	#lazy load
 	local = MyPyClass(__file__)
 
 	local.buffer.user = user
@@ -1026,7 +1027,7 @@ def EnableDhtServer():
 
 	# Проверить конфигурацию
 	if os.path.isfile("/var/ton-dht-server/config.json"):
-		local.add_log("DHT-Server config.json already exist. Break EnableDhtServer fuction", "warning")
+		local.add_log("DHT-Server config.json already exist. Break EnableDhtServer function", "warning")
 		return
 	#end if
 
@@ -1059,7 +1060,7 @@ def EnableDhtServer():
 	output = process.stdout.decode("utf-8")
 	err = process.stderr.decode("utf-8")
 	if len(err) > 0:
-		raise Exeption(err)
+		raise Exception(err)
 	#end if
 
 	data = json.loads(output)
