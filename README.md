@@ -147,8 +147,5 @@ Next, you need to create a password for connection:
 Ready. Now you can go to https://tonadmin.org site and log in with your credentials.
 git: https://github.com/igroman787/mtc-jsonrpc
 
-Ready. A local copy of toncenter is available at `http://<server-ip-address>:8000`
-git: https://github.com/igroman787/pytonv3
-
 # Useful links
 * https://docs.ton.org/

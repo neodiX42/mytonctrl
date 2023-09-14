@@ -60,6 +60,7 @@ else
   systemctl stop validator
   systemctl stop mytoncore
   systemctl stop dht-server
+  systemctl stop mtc-jsonrpc
 
   # Переменные
   str=$(systemctl cat mytoncore | grep User | cut -d '=' -f2)

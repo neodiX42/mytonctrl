@@ -107,9 +107,6 @@ MyTonCtrl> set sendTelemetry false
 Готово. Теперь можно идти на сайт https://tonadmin.org и войти используя свои данные.
 git: https://github.com/igroman787/mtc-jsonrpc
 
-Готово. Локальная копия toncenter доступна по адресу `http://<server-ip-address>:8000`
-git: https://github.com/igroman787/pytonv3
-
 ## Полезные ссылки
 1. https://github.com/ton-blockchain/mytonctrl/blob/master/docs/ru/manual-ubuntu.md
 2. https://ton.org/docs/
