@@ -28,6 +28,7 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   rm -rf /Library/LaunchDaemons/validator.plist
   rm -rf /Library/LaunchDaemons/mytoncore.plist
   rm -rf /Library/LaunchDaemons/dht-server.plist
+  rm -rf /Library/LaunchDaemons/mtc-jsonrpc.plist
 
   # Удаление файлов
   rm -rf /usr/local/src/ton
@@ -67,6 +68,7 @@ else
   rm -rf /etc/systemd/system/validator.service
   rm -rf /etc/systemd/system/mytoncore.service
   rm -rf /etc/systemd/system/dht-server.service
+  rm -rf /etc/systemd/system/mtc-jsonrpc.plist
   systemctl daemon-reload
 
   # Удаление файлов

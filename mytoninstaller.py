@@ -218,8 +218,6 @@ def Event(name):
 		DangerousRecoveryValidatorConfigFile()
 	if name == "enableJR":
 		EnableJsonRpc()
-	if name == "enablePT":
-		EnablePytonv3()
 	if name == "clc":
 		ix = sys.argv.index("-i")
 		initBlock_b64 = sys.argv[ix+1]
@@ -380,7 +378,7 @@ def FirstMytoncoreSettings():
 	if platform == "darwin":
 		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
-	    add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
+		add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
 
 	# Проверить конфигурацию
 	path = home + "/.local/share/mytoncore/mytoncore.db"
@@ -1099,17 +1097,6 @@ def EnableJsonRpc():
 	color_print(text)
 #end define
 
-def EnablePytonv3():
-	local.add_log("start EnablePytonv3 function", "debug")
-	srcDir = local.buffer.src_dir
-	user = local.buffer.user
-	exitCode = run_as_root(["bash",  srcDir + "mytonctrl/scripts/pytonv3installer.sh", "-u", user])
-	if exitCode == 0:
-		text = "EnablePytonv3 - {green}OK{endc}"
-	else:
-		text = "EnablePytonv3 - {red}Error{endc}"
-	color_print(text)
-#end define
 
 def str2b64(s):
 	b = s.encode("utf-8")
