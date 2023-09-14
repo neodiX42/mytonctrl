@@ -15,6 +15,7 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl stop system/validator
   launchctl stop system/mytoncore
   launchctl stop system/dht-server
+  launchctl stop system/mtc-jsonrpc
 
   launchctl unload /Library/LaunchDaemons/validator.plist
   launchctl unload /Library/LaunchDaemons/mytoncore.plist
