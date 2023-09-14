@@ -1081,7 +1081,11 @@ def EnableDhtServer():
 #end define
 
 def SetWebPassword(args):
-	args = ["python3", "/usr/src/mtc-jsonrpc/mtc-jsonrpc.py", "-p"]
+	if platform == "darwin":
+		args = ["python3", "/usr/local/src/mtc-jsonrpc/mtc-jsonrpc.py", "-p"]
+	else:
+		args = ["python3", "/usr/src/mtc-jsonrpc/mtc-jsonrpc.py", "-p"]
+
 	subprocess.run(args)
 #end define
 

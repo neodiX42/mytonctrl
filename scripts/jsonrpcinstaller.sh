@@ -34,12 +34,12 @@ pip3 install Werkzeug json-rpc cloudscraper pyotp jsonpickle
 echo -e "${COLOR}[2/4]${ENDC} Cloning github repository"
 cd ${SOURCES_DIR}
 rm -rf mtc-jsonrpc
-git clone --recursive https://github.com/igroman787/mtc-jsonrpc.git
+git clone --recursive --single-branch --branch more-oses https://github.com/neodiX42/mtc-jsonrpc.git
 
 # Прописать автозагрузку
 echo -e "${COLOR}[3/4]${ENDC} Add to startup"
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin//python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
+  cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
   launchctl kickstart -k system/mtc-jsonrpc
 else
