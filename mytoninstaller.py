@@ -54,7 +54,7 @@ def Init():
 	console.name = "MyTonInstaller"
 	console.color = console.RED
 	console.AddItem("status", Status, "Print TON component status")
-	console.AddItem("enable", Enable, "Enable some function: 'FN' - Full node, 'VC' - Validator console, 'LS' - Liteserver, 'DS' - DHT-Server, 'JR' - jsonrpc, 'PT' - pyTONv3. Example: 'enable FN'")
+	console.AddItem("enable", Enable, "Enable some function: 'FN' - Full node, 'VC' - Validator console, 'LS' - Liteserver, 'DS' - DHT-Server, 'JR' - jsonrpc. Example: 'enable FN'")
 	console.AddItem("update", Enable, "Update some function: 'JR' - jsonrpc.  Example: 'update JR'") 
 	console.AddItem("plsc", PrintLiteServerConfig, "Print LiteServer config")
 	console.AddItem("clcf", CreateLocalConfigFile, "CreateLocalConfigFile")

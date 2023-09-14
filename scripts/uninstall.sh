@@ -19,6 +19,7 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl unload /Library/LaunchDaemons/validator.plist
   launchctl unload /Library/LaunchDaemons/mytoncore.plist
   launchctl unload /Library/LaunchDaemons/dht-server.plist
+  launchctl unload /Library/LaunchDaemons/mtc-jsonrpc.plist
 
   # Переменные
   #str=$(launchctl cat mytoncore | grep User | cut -d '=' -f2)
