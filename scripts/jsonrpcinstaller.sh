@@ -41,8 +41,15 @@ echo -e "${COLOR}[3/4]${ENDC} Add to startup"
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
+  sleep 2
   launchctl stop system/mtc-jsonrpc
+  sleep 2
   launchctl start system/mtc-jsonrpc
+  sleep 1
+
+  # Выход из программы, т.к. выше еыходит с кодом 3
+  echo -e "${COLOR}[4/4]${ENDC} JsonRPC installation complete"
+  exit 0
 else
   cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2Systemd(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
