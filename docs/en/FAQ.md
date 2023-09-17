@@ -97,8 +97,8 @@ If you want to change the working directory of the validator from `/var/ton/` af
     For macOS
    
     ```bash
-    sudo launchctl unload /Library/LaunchDaemons/validator.plist
-    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
+    sudo launchctl bootout system /Library/LaunchDaemons/validator.plist
+    sudo launchctl bootout system /Library/LaunchDaemons/mytoncore.plist
     ```
 
 2. **Move validator files** - You then need to move the validator files with this command:
@@ -142,7 +142,8 @@ If you need to restart your validator, you can do so by running the following co
    For macOS
 
    ```bash
-   sudo launchctl kickstart -k system/validator
+   launchctl bootout system /Library/LaunchDaemons/validator.plist
+   launchctl bootstrap system /Library/LaunchDaemons/validator.plist
    ```
 
 Ensure you have sufficient permissions to execute these commands and make necessary adjustments. Always remember to back up important data before performing operations that could potentially affect your validator.

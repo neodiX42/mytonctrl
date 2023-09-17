@@ -87,8 +87,8 @@ Error: expected str, bytes or os.PathLike object, not NoneType
    macOS
    
     ```bash
-    sudo launchctl unload /Library/LaunchDaemons/validator.plist
-    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
+    sudo launchctl bootout system /Library/LaunchDaemons/validator.plist
+    sudo launchctl bootout system /Library/LaunchDaemons/mytoncore.plist
     ```
 
 2. **移動驗證者的檔案** - 接著使用以下指令將驗證者的檔案移至新的目錄：
@@ -131,7 +131,8 @@ Error: expected str, bytes or os.PathLike object, not NoneType
    
    macOS
    ```bash
-   sudo launchctl kickstart -k system/validator
+   launchctl bootout system /Library/LaunchDaemons/validator.plist
+   launchctl bootstrap system /Library/LaunchDaemons/validator.plist
    ```
 
 請確保你具有執行這些命令的適當權限，並進行必要的調整。在執行可能影響你的驗證者的操作之前，請始終記得備份重要數據。
