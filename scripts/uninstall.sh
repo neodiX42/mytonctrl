@@ -43,6 +43,7 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   rm -rf /var/ton-work
   rm -rf /var/ton-dht-server
   rm -rf /tmp/myton*
+  rm -rf /tmp/local*
   rm -rf /usr/local/bin/mytoninstaller/
   rm -rf /usr/local/bin/mytoncore/mytoncore.db
   rm -rf /Users/$USER/.local/share/mytonctrl
@@ -81,6 +82,7 @@ else
   rm -rf /var/ton-work
   rm -rf /var/ton-dht-server
   rm -rf /tmp/myton*
+  rm -rf /tmp/local*
   rm -rf /usr/local/bin/mytoninstaller/
   rm -rf /usr/local/bin/mytoncore/mytoncore.db
   rm -rf /home/${user}/.local/share/mytonctrl
