@@ -301,14 +301,6 @@ def FirstNodeSettings():
 	os.makedirs(ton_db_dir, exist_ok=True)
 	os.makedirs(keys_dir, exist_ok=True)
 
-	# Прописать автозагрузку
-	cpus = psutil.cpu_count() - 1
-	if platform == "darwin":
-		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=1)
-	else:
-		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
-		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=ton_db_dir, tonLogPath=tonLogPath, cpus=cpus)
-		add2systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
 	# Получить внешний ip адрес
 	ip = get_own_ip()
@@ -337,6 +329,15 @@ def FirstNodeSettings():
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
 	subprocess.run(args)
+
+	# Прописать автозагрузку
+	cpus = psutil.cpu_count() - 1
+	if platform == "darwin":
+		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=3)
+	else:
+		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
+		cmd = cmd.format(validatorAppPath=validatorAppPath, globalConfigPath=globalConfigPath, tonDbDir=ton_db_dir, tonLogPath=tonLogPath, cpus=cpus)
+		add2systemd(name="validator", user=vuser, start=cmd) # post="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py -e \"validator down\""
 
 	# start validator
 	StartValidator()

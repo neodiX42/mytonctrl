@@ -82,8 +82,7 @@ fi
 #fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  launchctl stop system/mytoncore
-  launchctl start system/mytoncore
+  launchctl kickstart -k system/mytoncore
 else
   systemctl restart mytoncore
 fi
