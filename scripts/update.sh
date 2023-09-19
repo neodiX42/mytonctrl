@@ -82,8 +82,8 @@ fi
 #fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  launchctl bootout system /Library/LaunchDaemons/mytoncore.plist
-  launchctl bootstrap system /Library/LaunchDaemons/mytoncore.plist
+  launchctl stop system/mytoncore
+  launchctl start system/mytoncore
 else
   systemctl restart mytoncore
 fi

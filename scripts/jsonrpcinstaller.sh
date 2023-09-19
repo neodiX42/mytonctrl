@@ -42,9 +42,9 @@ if [[ "$OSTYPE" =~ darwin.* ]]; then
   cmd="from sys import path; path.append('${SOURCES_DIR}/mytonctrl/'); from mypylib.mypylib import *; Add2LaunchdJsonServer(name='mtc-jsonrpc', user='${user}', start='/usr/bin/python3 ${SOURCES_DIR}/mtc-jsonrpc/mtc-jsonrpc.py')"
   python3 -c "${cmd}"
   sleep 2
-  launchctl bootout system /Library/LaunchDaemons/mtc-jsonrpc.plist
+  launchctl stop system/mtc-jsonrpc
   sleep 2
-  launchctl bootstrap system /Library/LaunchDaemons/mtc-jsonrpc.plist
+  launchctl start system/mtc-jsonrpc
   sleep 1
 
   # Выход из программы, т.к. выше еыходит с кодом 3

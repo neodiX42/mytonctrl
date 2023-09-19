@@ -95,8 +95,8 @@ Error: expected str, bytes or os.PathLike object, not NoneType
     Для macOS
    
     ```bash
-    sudo launchctl bootout system /Library/LaunchDaemons/validator.plist
-    sudo launchctl bootout system /Library/LaunchDaemons/validator.plist
+    sudo launchctl unload /Library/LaunchDaemons/validator.plist
+    sudo launchctl unload /Library/LaunchDaemons/mytoncore.plist
     ```
 
 2. **Переместите файлы валидатора** - Затем вам нужно переместить файлы валидатора с помощью этой команды:
@@ -140,8 +140,7 @@ Error: expected str, bytes or os.PathLike object, not NoneType
    Для macOS
 
    ```bash
-   sudo launchctl bootout system /Library/LaunchDaemons/validator.plist
-   sudo launchctl bootstrap system /Library/LaunchDaemons/validator.plist
+   sudo launchctl kickstart -k system/validator
    ```
 
 Убедитесь, что у вас есть достаточные права для выполнения этих команд и сделайте необходимые корректировки. Всегда помните о резервном копировании важных данных перед выполнением операций, которые могут потенциально повлиять на ваш валидатор.

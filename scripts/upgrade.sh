@@ -70,8 +70,8 @@ let "cpuNumber = memory / 2100000" || cpuNumber=1
 cmake -DCMAKE_BUILD_TYPE=Release ${srcdir}/${repo} -GNinja
 ninja -j ${cpuNumber} fift validator-engine lite-client pow-miner validator-engine-console generate-random-id dht-server func tonlibjson rldp-http-proxy
 if [[ "$OSTYPE" =~ darwin.* ]]; then
-  launchctl bootout system /Library/LaunchDaemons/validator.plist
-  launchctl bootstrap system /Library/LaunchDaemons/validator.plist
+  launchctl stop system/validator
+  launchctl start system/validator
 else
   systemctl restart validator
 fi
