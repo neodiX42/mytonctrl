@@ -11,13 +11,6 @@ fi
 author="ton-blockchain"
 repo="ton"
 branch="master"
-if [[ "$OSTYPE" =~ darwin.* ]]; then
-  srcdir="/usr/local/src/"
-  bindir="/usr/local/bin/"
-else
-  srcdir="/usr/src/"
-  bindir="/usr/bin/"
-fi
 
 # Get arguments
 while getopts a:r:b: flag
@@ -33,8 +26,18 @@ done
 COLOR='\033[92m'
 ENDC='\033[0m'
 
-# Установить дополнительные зависимости
-apt-get install -y libsecp256k1-dev libsodium-dev ninja-build automake autogen autoconf libtool texinfo
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  srcdir="/usr/local/src/"
+  bindir="/usr/local/bin/"
+	su $SUDO_USER -c "brew install secp256k1 libsodium ninja automake autogen autoconf libtool texinfo"
+	export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
+else
+  srcdir="/usr/src/"
+  bindir="/usr/bin/"
+  # Установить дополнительные зависимости
+  apt-get install -y libsecp256k1-dev libsodium-dev ninja-build automake autogen autoconf libtool texinfo
+fi
+
 
 # bugfix if the files are in the wrong place
 wget "https://ton-blockchain.github.io/global.config.json" -O global.config.json
@@ -69,6 +72,7 @@ memory=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
 let "cpuNumber = memory / 2100000" || cpuNumber=1
 cmake -DCMAKE_BUILD_TYPE=Release ${srcdir}/${repo} -GNinja
 ninja -j ${cpuNumber} fift validator-engine lite-client pow-miner validator-engine-console generate-random-id dht-server func tonlibjson rldp-http-proxy
+
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl kickstart -k system/validator
 else
