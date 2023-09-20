@@ -33,23 +33,6 @@ done
 COLOR='\033[92m'
 ENDC='\033[0m'
 
-migrate() {
-  folder=$1
-  if [ ! -d "~root/.local/share/mytoncore/$folder/" ]; then
-    mkdir -p ~root/.local/share/mytoncore/$folder
-  fi
-  cd ~root/.local/share/mytoncore/$folder/
-  if [ $(find . -type f | grep -v .backup | wc -l) -ne 0 ] ; then
-      for fn in $(find . -type f | grep -v .backup); do mv $fn $fn.backup; done
-  fi
-  if [ -d "/usr/local/bin/mytoncore/$folder" ]; then
-    if [ $(find /usr/local/bin/mytoncore/$folder -type f | wc -l) -ne 0 ] ; then
-      for fn in /usr/local/bin/mytoncore/$folder/*; do cp -R $fn $(basename $fn); done
-    fi
-  fi
-  return 0
-}
-
 if [ ! -f "${srcdir}/updated" ]; then
   # Установка компонентов python3
   pip3 install fastcrc
@@ -69,17 +52,6 @@ if [ ! -f "${srcdir}/updated" ]; then
 else
   rm ${srcdir}/updated
 fi
-
-# migrate old locations for root user
-#if [ -f "/usr/local/bin/mytoncore/mytoncore.db" ]; then
-#  echo -e "${COLOR}Migrating /usr/local/bin/ to $(echo ~root/.local/share/)${ENDC}"
-#  migrate "pools"
-#  migrate "contracts"
-#  if migrate "wallets"; then
-#    echo -e "${COLOR}Migration successful. Old data stored under /usr/local/bin/mytoncore.backup${ENDC}"
-#    mv /usr/local/bin/mytoncore /usr/local/bin/mytoncore.backup
-#  fi
-#fi
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl kickstart -k system/mytoncore

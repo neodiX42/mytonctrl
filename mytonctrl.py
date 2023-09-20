@@ -134,8 +134,7 @@ def check_vport():
 #end define
 
 def check_git(input_args, default_repo, text):
-	src_dir = "/usr/src"
-	git_path = f"{src_dir}/{default_repo}"
+	git_path = f"{srcDir}/{default_repo}"
 	default_author = "ton-blockchain"
 	default_branch = "master"
 
@@ -1096,7 +1095,7 @@ def Xrestart(inputArgs):
 	if len(inputArgs) < 2:
 		color_print("{red}Bad args. Usage:{endc} xrestart <timestamp> <args>")
 		return
-	args = ["python3", "/usr/src/mytonctrl/scripts/xrestart.py"]
+	args = ["python3", f"{srcDir}/mytonctrl/scripts/xrestart.py"]
 	args += inputArgs
 	exitCode = run_as_root(args)
 	if exitCode == 0:

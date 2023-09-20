@@ -9,9 +9,7 @@ path.append(dir(path[0]))
 from mypylib.mypylib import *
 
 
-if platform == "darwin":
-	print("todo")
-else:
+if platform != "darwin":
 	# validator.service
 	file = open("/etc/systemd/system/validator.service", 'rt')
 	text = file.read()
