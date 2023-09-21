@@ -29,7 +29,13 @@ ENDC='\033[0m'
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   srcdir="/usr/local/src/"
   bindir="/usr/local/bin/"
-	su $SUDO_USER -c "brew install secp256k1 libsodium ninja automake autogen autoconf libtool texinfo"
+  if [[ $SUDO_USER -eq "root" ]]; then
+    echo Enter non-root username:
+    read usr
+  else
+	  usr=$SUDO_USER
+	fi
+	su $usr -c "brew install secp256k1 libsodium ninja automake autogen autoconf libtool texinfo"
 	export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 else
   srcdir="/usr/src/"
