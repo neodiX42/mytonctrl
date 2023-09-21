@@ -7,12 +7,13 @@ import requests
 import time
 from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
-from sys import platform
+import platform
 
+psys = platform.system()
 console = MyPyConsole()
-defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if platform == "darwin" else "/usr/bin/ton/local.config.json"
+defaultLocalConfigPath = "/usr/local/bin/ton/local.config.json" if psys == "Darwin" else "/usr/bin/ton/local.config.json"
 mConfigSharedPath = "/tmp/mytoncore/mtc-work-dir"
-launcher = "launchctl" if platform == "darwin" else "systemctl"
+launcher = "launchctl" if psys == "Darwin" else "systemctl"
 
 def Init():
 	global local
@@ -71,7 +72,7 @@ def Refresh():
 	#end if
 
 	# create variables
-	if platform == "darwin":
+	if psys == "Darwin":
 		bin_dir = "/usr/local/bin/"
 		src_dir = "/usr/local/src/"
 	else:
@@ -286,7 +287,7 @@ def FirstNodeSettings():
 		return
 	#end if
 
-	if platform != "darwin":
+	if psys != "Darwin":
 		# Создать Линукс пользователя
 		file = open("/etc/passwd", 'rt')
 		text = file.read()
@@ -324,7 +325,7 @@ def FirstNodeSettings():
 
 	# chown 1
 	local.add_log("Chown ton-work dir", "debug")
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", "-R", user + ':' + group, ton_work_dir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, ton_work_dir]
@@ -332,7 +333,7 @@ def FirstNodeSettings():
 
 	# Прописать автозагрузку
 	cpus = psutil.cpu_count() - 1
-	if platform == "darwin":
+	if psys == "Darwin":
 		Add2LaunchdValidator(name="validator", user=user, start=validatorAppPath, arg1=cpus, arg2=globalConfigPath, arg3=ton_db_dir, arg4=tonLogPath, arg5=604800, arg6=3)
 	else:
 		cmd = "{validatorAppPath} --threads {cpus} --daemonize --global-config {globalConfigPath} --db {tonDbDir} --logname {tonLogPath} --state-ttl 604800 --verbosity 1"
@@ -376,7 +377,7 @@ def FirstMytoncoreSettings():
 	srcDir = local.buffer.src_dir
 
 	# Прописать mytoncore.py в автозагрузку
-	if platform == "darwin":
+	if psys == "Darwin":
 		Add2LaunchdMyTonCore(name="mytoncore", user=user, start="{srcDir}mytonctrl/mytoncore.py".format(srcDir=srcDir))
 	else:
 		add2systemd(name="mytoncore", user=user, start="/usr/bin/python3 /usr/src/mytonctrl/mytoncore.py")
@@ -389,7 +390,7 @@ def FirstMytoncoreSettings():
 		return
 	#end if
 
-	if platform == "linux":
+	if psys == "Linux":
 		#amazon bugfix
 		path1 = "/home/{user}/.local/".format(user=user)
 		path2 = path1 + "share/"
@@ -397,7 +398,7 @@ def FirstMytoncoreSettings():
 		os.makedirs(path1, exist_ok=True)
 		os.makedirs(path2, exist_ok=True)
 		args = ["chown", chownOwner, path1, path2]
-	elif platform == "darwin":
+	elif psys == "Darwin":
 		path1 = "/Users/{user}/.local/".format(user=user)
 		path2 = path1 + "share/"
 		chownOwner = user + ':' + group
@@ -445,7 +446,7 @@ def FirstMytoncoreSettings():
 	SetConfig(path=mconfig_path, data=mconfig)
 
 	# chown 1
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", user + ':' + group, mconfigDir, mconfig_path]
 	else:
 		args = ["chown", user + ':' + user, mconfigDir, mconfig_path]
@@ -502,7 +503,7 @@ def EnableValidatorConsole():
 	client_key_b64 = output_arr[1].replace('\n', '')
 
 	# chown 1
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", user + ':' + group, newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
@@ -510,7 +511,7 @@ def EnableValidatorConsole():
 	subprocess.run(args)
 
 	# chown 2
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", user + ':' + group, server_pubkey, client_key, client_pubkey]
 	else:
 		args = ["chown", user + ':' + user, server_pubkey, client_key, client_pubkey]
@@ -599,7 +600,7 @@ def EnableLiteServer():
 
 	# chown 1
 	local.add_log("chown 1", "debug")
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", user + ':' + group, newKeyPath]
 	else:
 		args = ["chown", vuser + ':' + vuser, newKeyPath]
@@ -607,7 +608,7 @@ def EnableLiteServer():
 
 	# chown 2
 	local.add_log("chown 2", "debug")
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", user + ':' + group, liteserver_pubkey]
 	else:
 		args = ["chown", user + ':' + user, liteserver_pubkey]
@@ -656,7 +657,7 @@ def EnableLiteServer():
 def StartValidator():
 	# restart validator
 	local.add_log("Start/restart validator service", "debug")
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = [launcher, "kickstart", "-k", "system/validator"]
 	else:
 		args = [launcher, "restart", "validator"]
@@ -670,7 +671,7 @@ def StartValidator():
 def StartMytoncore():
 	# restart mytoncore
 	local.add_log("Start/restart mytoncore service", "debug")
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = [launcher, "kickstart", "-k", "system/mytoncore"]
 	else:
 		args = [launcher, "restart", "mytoncore"]
@@ -996,7 +997,7 @@ def CreateSymlinks():
 
 	# env
 	fiftpath = "export FIFTPATH="+ tonSrcDir + "crypto/fift/lib/:"+ tonSrcDir + "crypto/smartcont/"
-	if platform == "darwin":
+	if psys == "Darwin":
 		env_file = "/etc/profile"
 		file = open(env_file, 'rt+')
 		text = file.read()
@@ -1034,7 +1035,7 @@ def EnableDhtServer():
 	os.makedirs(tonDhtServerDir, exist_ok=True)
 
 	# Прописать автозагрузку
-	if platform == "darwin":
+	if psys == "Darwin":
 		Add2LaunchdDhtServer(name="dht-server", user=user, start=dht_server, arg1=globalConfigPath, arg2=tonDhtServerDir)
 	else:
 		cmd = "{dht_server} -C {globalConfigPath} -D {tonDhtServerDir}"
@@ -1067,14 +1068,14 @@ def EnableDhtServer():
 	print(text)
 
 	# chown 1
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["chown", "-R", user + ':' + group, tonDhtServerDir]
 	else:
 		args = ["chown", "-R", vuser + ':' + vuser, tonDhtServerDir]
 	subprocess.run(args)
 
 	# start DHT-Server
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = [launcher, "kickstart", "-k", "system/dht-server"]
 	else:
 		args = [launcher, "restart", "dht-server"]
@@ -1082,7 +1083,7 @@ def EnableDhtServer():
 #end define
 
 def SetWebPassword(args):
-	if platform == "darwin":
+	if psys == "Darwin":
 		args = ["python3", "/usr/local/src/mtc-jsonrpc/mtc-jsonrpc.py", "-p"]
 	else:
 		args = ["python3", "/usr/src/mtc-jsonrpc/mtc-jsonrpc.py", "-p"]

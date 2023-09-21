@@ -1,6 +1,6 @@
 # Говнокод ON
 import os
-from sys import platform
+import platform
 from sys import path
 from os.path import dirname as dir
 path.append(dir(path[0]))
@@ -9,7 +9,7 @@ path.append(dir(path[0]))
 from mypylib.mypylib import *
 
 
-if platform != "darwin":
+if platform.system() != "Darwin":
 	# validator.service
 	file = open("/etc/systemd/system/validator.service", 'rt')
 	text = file.read()

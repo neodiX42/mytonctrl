@@ -5,15 +5,16 @@ from mypylib.mypylib import *
 from mypyconsole.mypyconsole import *
 from mytoncore import *
 import sys, getopt, os
-from sys import platform
+import platform
 
 local = MyPyClass(__file__)
 console = MyPyConsole()
 ton = MyTonCore()
 
-binDir = "/usr/local/bin/" if platform == "darwin" else "/usr/bin/"
-srcDir = "/usr/local/src/" if platform == "darwin" else "/usr/src/"
-tonSrcDir = "/usr/local/src/ton/" if platform == "darwin" else "/usr/src/ton/"
+psys = platform.system()
+binDir = "/usr/local/bin/" if psys == "Darwin" else "/usr/bin/"
+srcDir = "/usr/local/src/" if psys == "Darwin" else "/usr/src/"
+tonSrcDir = "/usr/local/src/ton/" if psys == "Darwin" else "/usr/src/ton/"
 
 def Init(argv):
 	# Load translate table
