@@ -66,12 +66,19 @@ export CCACHE_DISABLE=1
 
 # Update binary
 cd ${bindir}/${repo}
-ls --hide=global.config.json | xargs -d '\n' rm -rf
-rm -rf .ninja_*
-memory=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
-let "cpuNumber = memory / 2100000" || cpuNumber=1
+if [[ "$OSTYPE" =~ darwin.* ]]; then
+  cpus=$(sysctl -a | grep cpu | grep hw.ncpu | awk '{print $2}')
+  mv global.config.json ..
+  rm -rf * .ninja_*
+  mv ../global.config.json .
+else
+  cpus=$(lscpu | grep "CPU(s)" | head -n 1 | awk '{print $2}')
+  ls --hide=global.config.json | xargs -d '\n' rm -rf
+  rm -rf .ninja_*
+fi
+
 cmake -DCMAKE_BUILD_TYPE=Release ${srcdir}/${repo} -GNinja
-ninja -j ${cpuNumber} fift validator-engine lite-client pow-miner validator-engine-console generate-random-id dht-server func tonlibjson rldp-http-proxy
+ninja -j ${cpus} fift validator-engine lite-client pow-miner validator-engine-console generate-random-id dht-server func tonlibjson rldp-http-proxy
 
 if [[ "$OSTYPE" =~ darwin.* ]]; then
   launchctl kickstart -k system/validator
